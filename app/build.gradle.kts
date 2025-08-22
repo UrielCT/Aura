@@ -69,6 +69,10 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
+    // Koin for Android
+    val koin_version = "4.0.3"
+    implementation ("io.insert-koin:koin-androidx-compose:$koin_version")
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

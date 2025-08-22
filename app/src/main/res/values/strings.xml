@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Aura</string>
+    <string name="weather_title">Climas</string>
+    <string name="cities_title">Ciudades</string>
 </resources>
