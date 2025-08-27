@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class RemoteDatabase(
-    private val service:WeatherService,
+    private val service:WeatherService? = null,
     private val utils: FormatUtils
 ) {
     private fun setupRetrofit(): Retrofit{
