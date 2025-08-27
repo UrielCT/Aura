@@ -4,16 +4,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aura.R
 import com.aura.ui.RemoteDatabase
+import com.aura.ui.utils.FormatUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class WeatherViewModel(private val rdb: RemoteDatabase): ViewModel() {
+class WeatherViewModel(private val rdb: RemoteDatabase = RemoteDatabase(null, FormatUtils())): ViewModel() {
 
     private val _uiState = MutableStateFlow(WeatherUiState())
     val uiState: StateFlow<WeatherUiState> = _uiState.asStateFlow()
+
+    init {
+        searchWeather("Russia")
+    }
 
     fun searchWeather(name: String){
         viewModelScope.launch {
@@ -21,7 +26,7 @@ class WeatherViewModel(private val rdb: RemoteDatabase): ViewModel() {
             try {
                 rdb.searchWeatherByName(name) { result ->
                     if (result != null){
-                        _uiState.update { it.copy(date = result) }
+                        _uiState.update { it.copy(data = result) }
                     }else{
                         _uiState.update { it.copy(msgRes = R.string.weather_search_error) }
                     }

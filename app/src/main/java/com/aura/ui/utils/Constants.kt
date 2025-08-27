@@ -12,7 +12,7 @@ object Constants {
     const val PATH_V1 = "/v1/current.json"
 
     const val PARAM_KEY = "key"
-    const val PARAM_QUERY = "g"
+    const val PARAM_QUERY = "q"
     const val PARAM_LANGUAGE = "lang"
 
     const val API_KEY = "60d7d18295d04fae818182508252208"

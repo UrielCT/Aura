@@ -27,7 +27,7 @@ class RemoteDatabase(
         withContext(Dispatchers.IO){
             try {
                 val result = weatherService().searchWeatherByName(
-                    key = Constants.BASE_URL,
+                    key = Constants.API_KEY,
                     name = name,
                     lang = Constants.LANG_ES
                 )
