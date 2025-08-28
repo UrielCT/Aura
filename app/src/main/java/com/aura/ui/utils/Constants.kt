@@ -18,4 +18,8 @@ object Constants {
     const val API_KEY = "60d7d18295d04fae818182508252208"
     const val LANG_ES = "es"
 
+    //components
+    const val DURATION_SHORT = 3000L
+    const val DURATION_LONG = 8000L
+
 }

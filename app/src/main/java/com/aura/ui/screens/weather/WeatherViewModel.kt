@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aura.R
 import com.aura.ui.RemoteDatabase
-import com.aura.ui.utils.FormatUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -36,6 +35,12 @@ class WeatherViewModel(private val rdb: RemoteDatabase): ViewModel() {
             }finally {
                 _uiState.update { it.copy(inProgress = false) }
             }
+        }
+    }
+
+    fun clearMsg(){
+        viewModelScope.launch {
+            _uiState.update { it.copy(msgRes = R.string.msg_empty) }
         }
     }
 }
