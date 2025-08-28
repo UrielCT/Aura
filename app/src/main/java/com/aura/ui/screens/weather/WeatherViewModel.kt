@@ -16,9 +16,9 @@ class WeatherViewModel(private val rdb: RemoteDatabase): ViewModel() {
     private val _uiState = MutableStateFlow(WeatherUiState())
     val uiState: StateFlow<WeatherUiState> = _uiState.asStateFlow()
 
-    init {
-        searchWeather("Russia")
-    }
+//    init {
+//        searchWeather("Russia")
+//    }
 
     fun searchWeather(name: String){
         viewModelScope.launch {
