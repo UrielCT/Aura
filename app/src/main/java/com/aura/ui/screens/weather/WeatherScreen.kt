@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aura.R
 import com.aura.ui.components.CoilImage
 import com.aura.ui.components.TextTitle
@@ -24,11 +23,12 @@ import com.aura.ui.theme.CommonPaddingDefault
 import com.aura.ui.theme.CommonPaddingLarge
 import com.aura.ui.theme.CommonPaddingMin
 import com.aura.ui.theme.Typography
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun WeatherScreen(
     modifier: Modifier,
-    vm:WeatherViewModel= viewModel()
+    vm:WeatherViewModel = koinViewModel()
 ){
     val uiState by vm.uiState.collectAsState()
 
