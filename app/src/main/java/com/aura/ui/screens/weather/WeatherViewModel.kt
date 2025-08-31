@@ -19,20 +19,36 @@ class WeatherViewModel(private val ds: DataSource): ViewModel() {
     val uiState: StateFlow<WeatherUiState> = _uiState.asStateFlow()
 
     init {
-        getAllCities()
+        //getAllCities()
+        getAllCitiesRealTime()
     }
 
-    private fun getAllCities(){
-        executeAction {
-            ds.getAllCities { result ->
+    private fun getAllCitiesRealTime(){
+        viewModelScope.launch {
+            ds.getAllCitiesRealTime().collect { result ->
                 if (result.isNotEmpty()){
                     _uiState.update { it.copy(items = result) }
                 }else{
-                    _uiState.update { it.copy(msgRes = R.string.weather_empty_list) }
+                    _uiState.update { it.copy( items = emptyList(),
+                        msgRes = R.string.weather_empty_list) }
                 }
             }
+
         }
     }
+
+
+//    private fun getAllCities(){
+//        executeAction {
+//            ds.getAllCities { result ->
+//                if (result.isNotEmpty()){
+//                    _uiState.update { it.copy(items = result) }
+//                }else{
+//                    _uiState.update { it.copy(msgRes = R.string.weather_empty_list) }
+//                }
+//            }
+//        }
+//    }
 
     fun searchWeather(name: String){
         executeAction {

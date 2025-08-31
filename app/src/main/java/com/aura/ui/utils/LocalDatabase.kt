@@ -6,6 +6,7 @@ import com.aura.dao.WeatherDao
 import com.aura.ui.models.City
 import com.aura.ui.models.WeatherCity
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class LocalDatabase(
@@ -14,9 +15,11 @@ class LocalDatabase(
     private val weatherCityDao: WeatherCityDao,
     private val utils: FormatUtils
 ) {
-    suspend fun getAllCities(onResult: (List<City>) -> Unit) = withContext(Dispatchers.IO){
-        onResult(cityDao.getAllCities())
-    }
+//    suspend fun getAllCities(onResult: (List<City>) -> Unit) = withContext(Dispatchers.IO){
+//        onResult(cityDao.getAllCities())
+//    }
+
+    fun getAllCitiesRealTime(): Flow<List<City>> = cityDao.getAllCitiesRealTime()
 
     suspend fun addWeatherAndCity(weatherCity: WeatherCity, onResult: (Boolean) -> Unit)=
         withContext(Dispatchers.IO){

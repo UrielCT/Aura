@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.aura.ui.models.City
 import com.aura.ui.utils.Constants
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CityDao {
@@ -21,6 +22,9 @@ interface CityDao {
 
     @Query("SELECT * FROM ${Constants.E_CITY}")
     suspend fun getAllCities(): List<City>
+
+    @Query("SELECT * FROM ${Constants.E_CITY}")
+    fun getAllCitiesRealTime(): Flow<List<City>>
 
     @Query("SELECT * FROM ${Constants.E_CITY} " +
             "WHERE ${Constants.P_NAME} = :name " +

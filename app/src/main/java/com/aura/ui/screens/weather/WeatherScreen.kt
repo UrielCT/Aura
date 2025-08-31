@@ -14,6 +14,8 @@ import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -142,7 +144,11 @@ private fun ActionsView(
         })
 
         OutlinedIconButton(onClick = { onSave() },
-            enabled = uiState.data.name.isNotBlank()) {
+            enabled = uiState.data.name.isNotBlank(),
+            colors = IconButtonDefaults.iconButtonColors(
+                contentColor = MaterialTheme.colorScheme.primary
+            )
+        ) {
             Icon(Icons.Default.CloudDownload, contentDescription = null)
         }
     }

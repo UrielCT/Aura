@@ -11,4 +11,13 @@
     <string name="weather_local_save_error">Error al guardar.</string>
     <string name="weather_empty_list">No hay registros</string>
     <string name="weather_local_by_city_error">Intenta con otra ciudad</string>
+    <string name="cities_msg_empty_list">No hay registros</string>
+    <string name="msg_no_apps">No hay apps compatibles.</string>
+    <string name="cities_msg_delete_success">Ciudad eliminada.</string>
+    <string name="cities_msg_delete_error">No se pudo eliminar.</string>
+    <string name="dialog_cancel">Cancelar</string>
+    <string name="dialog_ok">OK\n</string>
+    <string name="dialog_msg_warning">Advertencia: esta acción es irreversible.</string>
+    <string name="dialog_delete_title">¿Eliminar?</string>
+    <string name="dialog_delete_confirm">Eliminar</string>
 </resources>

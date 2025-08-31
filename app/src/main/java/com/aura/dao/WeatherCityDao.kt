@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Transaction
 import com.aura.ui.models.City
 import com.aura.ui.models.Weather
+import com.aura.ui.screens.cities.di.citiesModule
 
 @Dao
 interface WeatherCityDao : CityDao, WeatherDao {
@@ -16,6 +17,15 @@ interface WeatherCityDao : CityDao, WeatherDao {
             getWeatherByCityId(dbCity.id)?.let { dbWeather ->
                 return updateWeather(weather.copy(id = dbWeather.id, cityId = dbWeather.cityId)).toLong()
             }
+        }
+        return 0
+    }
+
+    @Transaction
+    suspend fun deleteCityAndWeather(city: City):Int{
+        getWeatherByCityId(cityId = city.id)?.let { weather ->
+            deleteWeather(weather)
+            return deleteCity(city)
         }
         return 0
     }

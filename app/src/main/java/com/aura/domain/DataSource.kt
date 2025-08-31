@@ -6,6 +6,7 @@ import com.aura.ui.models.WeatherCity
 import com.aura.ui.utils.FormatUtils
 import com.aura.ui.utils.LocalDatabase
 import com.aura.ui.utils.NetworkUtils
+import kotlinx.coroutines.flow.Flow
 
 class DataSource(
     private val rdb: RemoteDatabase,
@@ -13,7 +14,8 @@ class DataSource(
     private val nUtils: NetworkUtils,
     private val fUtils:FormatUtils
 ) {
-    suspend fun getAllCities(onResult: (List<City>) -> Unit ) = ldb.getAllCities { onResult(it) }
+    //suspend fun getAllCities(onResult: (List<City>) -> Unit ) = ldb.getAllCities { onResult(it) }
+    fun getAllCitiesRealTime():Flow<List<City>> = ldb.getAllCitiesRealTime()
 
     suspend fun searchWeatherByName(name:String, onResult:(WeatherCity?) ->Unit) {
         try {
