@@ -6,4 +6,9 @@
     <string name="weather_search_error">Intente con otro nombre.</string>
     <string name="weather_general_error">Error desconocido.</string>
     <string name="cities_hint_search_city">buscar ciudad</string>
+    <string name="cities_city">Ciudad</string>
+    <string name="weather_local_save_success">Datos almacenados.</string>
+    <string name="weather_local_save_error">Error al guardar.</string>
+    <string name="weather_empty_list">No hay registros</string>
+    <string name="weather_local_by_city_error">Intenta con otra ciudad</string>
 </resources>

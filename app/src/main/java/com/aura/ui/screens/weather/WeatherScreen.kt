@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,10 +30,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.aura.R
+import com.aura.ui.components.AuraDropdownMenu
 import com.aura.ui.components.CoilImage
 import com.aura.ui.components.CustomSnackbar
 import com.aura.ui.components.ProgressFullScreen
 import com.aura.ui.components.TextTitle
+import com.aura.ui.models.City
 import com.aura.ui.models.WeatherCity
 import com.aura.ui.theme.AuraTheme
 import com.aura.ui.theme.CommonPaddingDefault
@@ -55,6 +59,15 @@ fun WeatherScreen(
         ){
             TextTitle(R.string.weather_title)
             WeatherInfoView(uiState.data)
+            ActionsView(
+                uiState= uiState,
+                onSelect = { city ->
+                    vm.getWeatherByCity(city)
+                },
+                onSave = {
+                    vm.saveWeatherCity(uiState.data)
+                }
+            )
             CustomSnackbar(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -115,6 +128,25 @@ private fun SearchView(onSearch: (String) -> Unit){
     }
 }
 
+@Composable
+private fun ActionsView(
+    uiState: WeatherUiState,
+    onSelect:(City) -> Unit,
+    onSave:()  -> Unit
+){
+    Row(horizontalArrangement = Arrangement.spacedBy(CommonPaddingMin)) {
+        AuraDropdownMenu(items = uiState.items,
+            labelRes = R.string.cities_city,
+            onSelect = { city ->
+            onSelect(city)
+        })
+
+        OutlinedIconButton(onClick = { onSave() },
+            enabled = uiState.data.name.isNotBlank()) {
+            Icon(Icons.Default.CloudDownload, contentDescription = null)
+        }
+    }
+}
 
 
 @Preview(showBackground = true)
@@ -122,6 +154,14 @@ private fun SearchView(onSearch: (String) -> Unit){
 private fun SearchPreview(){
     AuraTheme {
         SearchView {  }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ActionsPreview(){
+    AuraTheme {
+        ActionsView(WeatherUiState(),{},{})
     }
 }
 

@@ -1,5 +1,7 @@
 package com.aura.ui.utils
 
+import com.aura.ui.models.City
+import com.aura.ui.models.Weather
 import com.aura.ui.models.WeatherCity
 import com.aura.ui.models.WeatherResponse
 
@@ -23,5 +25,23 @@ class FormatUtils {
         }catch (e: Exception){
             return null
         }
+    }
+
+    fun weatherCityToCity(weatherCity: WeatherCity): City{
+        return City(
+            name = weatherCity.name,
+            country = weatherCity.country,
+            lat = weatherCity.lat,
+            lon = weatherCity.lon
+        )
+    }
+
+    fun weatherCityToWeather(weatherCity: WeatherCity) : Weather {
+        return Weather(
+            temp_c = weatherCity.temp_c,
+            iconHttps = weatherCity.iconHttps,
+            description = weatherCity.description,
+            wind_kph = weatherCity.wind_kph
+        )
     }
 }

@@ -1,6 +1,6 @@
 package com.aura.ui.models
 
 data class WeatherResponse(
-    val location: Location= Location(),
+    val location: City= City(),
     val current: Current= Current()
 )

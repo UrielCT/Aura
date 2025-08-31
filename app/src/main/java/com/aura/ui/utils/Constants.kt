@@ -22,4 +22,15 @@ object Constants {
     const val DURATION_SHORT = 3000L
     const val DURATION_LONG = 8000L
 
+    //Room
+    const val DB_NAME = "db_aura"
+    const val DB_INIT_VERSION = 1
+    // E = Entity
+    const val E_CITY = "city_entity"
+    const val E_WEATHER = "weather_entity"
+    // P = Property
+    const val P_NAME = "name"
+    const val P_COUNTRY = "country"
+    const val P_CITY_ID = "cityId"
+
 }

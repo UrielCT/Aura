@@ -12,4 +12,11 @@ interface WeatherService {
         @Query(Constants.PARAM_QUERY) name: String,
         @Query(Constants.PARAM_LANGUAGE) lang: String
     ) : WeatherResponse
+
+    @GET(Constants.PATH_V1)
+    suspend fun getWeatherByCoordinates(
+        @Query(Constants.PARAM_KEY) key: String,
+        @Query(Constants.PARAM_QUERY) coordinates: String,
+        @Query(Constants.PARAM_LANGUAGE) lang: String
+    ) : WeatherResponse
 }
