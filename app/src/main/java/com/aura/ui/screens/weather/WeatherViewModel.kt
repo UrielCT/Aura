@@ -3,7 +3,10 @@ package com.aura.ui.screens.weather
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aura.R
-import com.aura.domain.DataSource
+import com.aura.domain.usecase.AddWeatherCityUseCase
+import com.aura.domain.usecase.GetAllCitiesUseCase
+import com.aura.domain.usecase.GetWeatherByCityUseCase
+import com.aura.domain.usecase.SearchWeatherByNameUseCase
 import com.aura.ui.models.City
 import com.aura.ui.models.WeatherCity
 import kotlinx.coroutines.Job
@@ -13,78 +16,72 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class WeatherViewModel(private val ds: DataSource): ViewModel() {
+class WeatherViewModel(
+    private val getAllCitiesUseCase: GetAllCitiesUseCase,
+    private val addWeatherCityUseCase: AddWeatherCityUseCase,
+    private val searchWeatherByNameUseCase: SearchWeatherByNameUseCase,
+    private val getWeatherByCityUseCase: GetWeatherByCityUseCase
+): ViewModel() {
 
     private val _uiState = MutableStateFlow(WeatherUiState())
     val uiState: StateFlow<WeatherUiState> = _uiState.asStateFlow()
 
     init {
-        //getAllCities()
         getAllCitiesRealTime()
     }
 
-    private fun getAllCitiesRealTime(){
+
+    private fun getAllCitiesRealTime() {
         viewModelScope.launch {
-            ds.getAllCitiesRealTime().collect { result ->
-                if (result.isNotEmpty()){
+            getAllCitiesUseCase().collect { result ->
+                if (result.isNotEmpty()) {
                     _uiState.update { it.copy(items = result) }
-                }else{
-                    _uiState.update { it.copy( items = emptyList(),
-                        msgRes = R.string.weather_empty_list) }
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            items = emptyList(),
+                            msgRes = R.string.weather_empty_list
+                        )
+                    }
                 }
             }
-
         }
     }
 
 
-//    private fun getAllCities(){
-//        executeAction {
-//            ds.getAllCities { result ->
-//                if (result.isNotEmpty()){
-//                    _uiState.update { it.copy(items = result) }
-//                }else{
-//                    _uiState.update { it.copy(msgRes = R.string.weather_empty_list) }
-//                }
-//            }
-//        }
-//    }
-
-    fun searchWeather(name: String){
+    fun searchWeather(name: String) {
         executeAction {
-            ds.searchWeatherByName(name) { result ->
-                if (result != null){
-                    _uiState.update { it.copy(data = result) }
-                }else{
-                    _uiState.update { it.copy(msgRes = R.string.weather_search_error) }
-                }
+            val result = searchWeatherByNameUseCase(name) // Ya devuelve directamente WeatherCity?
+            if (result != null) {
+                _uiState.update { it.copy(data = result) }
+            } else {
+                _uiState.update { it.copy(msgRes = R.string.weather_search_error) }
             }
         }
     }
 
-    fun saveWeatherCity(weatherCity: WeatherCity){
+    fun saveWeatherCity(weatherCity: WeatherCity) {
         executeAction {
-            ds.addWeatherAndCity(weatherCity){success ->
-                if (success){
-                    _uiState.update { it.copy(msgRes = R.string.weather_local_save_success) }
-                }else{
-                    _uiState.update { it.copy(msgRes = R.string.weather_local_save_error) }
-                }
+            val success = addWeatherCityUseCase(weatherCity)
+            if (success) {
+                _uiState.update { it.copy(msgRes = R.string.weather_local_save_success) }
+            } else {
+                _uiState.update { it.copy(msgRes = R.string.weather_local_save_error) }
             }
         }
     }
 
-    fun getWeatherByCity(city: City){
+    fun getWeatherByCity(city: City) {
         executeAction {
-            ds.getWeatherByCity(city){ result ->
-                if(result != null){
-                    _uiState.update { it.copy(data = result) }
-                }else{
-                    _uiState.update { it.copy(msgRes = R.string.weather_local_by_city_error) }
-                }
+            val result = getWeatherByCityUseCase(city)
+            if (result != null) {
+                _uiState.update { it.copy(data = result) }
+            } else {
+                _uiState.update { it.copy(msgRes = R.string.weather_local_by_city_error) }
             }
         }
     }
+
 
     fun clearMsg(){
         viewModelScope.launch {

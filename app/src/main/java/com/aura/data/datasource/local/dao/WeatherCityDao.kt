@@ -1,10 +1,9 @@
-package com.aura.dao
+package com.aura.data.datasource.local.dao
 
 import androidx.room.Dao
 import androidx.room.Transaction
 import com.aura.ui.models.City
 import com.aura.ui.models.Weather
-import com.aura.ui.screens.cities.di.citiesModule
 
 @Dao
 interface WeatherCityDao : CityDao, WeatherDao {

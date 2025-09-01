@@ -1,4 +1,4 @@
-package com.aura.ui.di
+package com.aura.di
 
 import com.aura.ui.utils.FormatUtils
 import com.aura.ui.utils.IntentUtils

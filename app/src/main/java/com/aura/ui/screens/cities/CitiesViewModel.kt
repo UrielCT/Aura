@@ -3,6 +3,8 @@ package com.aura.ui.screens.cities
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aura.R
+import com.aura.domain.usecase.DeleteCityUseCase
+import com.aura.domain.usecase.GetAllCitiesUseCase
 import com.aura.ui.models.City
 import com.aura.ui.utils.IntentUtils
 import kotlinx.coroutines.Job
@@ -13,9 +15,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CitiesViewModel(
-    private val db: LocalDatabase,
+    private val getAllCitiesUseCase: GetAllCitiesUseCase,
+    private val deleteCityAndWeatherUseCase: DeleteCityUseCase,
     private val utils: IntentUtils
 ) : ViewModel(), ICitiesViewModel {
+
     private val _uiState = MutableStateFlow(CityUiState())
     override fun getUiState(): StateFlow<CityUiState> = _uiState.asStateFlow()
 
@@ -23,39 +27,43 @@ class CitiesViewModel(
         getAllCitiesRealTime()
     }
 
-    private fun getAllCitiesRealTime(){
+    private fun getAllCitiesRealTime() {
         viewModelScope.launch {
-            db.gatAllCitiesRealTime().collect { result ->
-                if (result.isNotEmpty()){
+            getAllCitiesUseCase().collect { result ->
+                if (result.isNotEmpty()) {
                     _uiState.update { it.copy(items = result) }
-                }else{
-                    _uiState.update { it.copy( items = emptyList(),
-                        msgRes = R.string.cities_msg_empty_list) }
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            items = emptyList(),
+                            msgRes = R.string.weather_empty_list
+                        )
+                    }
                 }
             }
         }
     }
+
+
+    override fun deleteCity(city: City) {
+        executeAction {
+            val success = deleteCityAndWeatherUseCase(city)
+            if (success) {
+                _uiState.update { it.copy(msgRes = R.string.cities_msg_delete_success) }
+            } else {
+                _uiState.update { it.copy(msgRes = R.string.cities_msg_delete_error) }
+            }
+        }
+    }
+
 
     override fun showMap(city: City){
         utils.showMap(city.lat,city.lon,city.name)
     }
 
-
     override fun clearMsg(){
         viewModelScope.launch {
             _uiState.update { it.copy(msgRes = R.string.msg_empty) }
-        }
-    }
-
-    override fun deleteCity(city: City) {
-        executeAction {
-            db.deleteCityAndWeather(city){ success ->
-                if (success){
-                    _uiState.update { it.copy(msgRes = R.string.cities_msg_delete_success) }
-                }else{
-                    _uiState.update { it.copy(msgRes = R.string.cities_msg_delete_error) }
-                }
-            }
         }
     }
 

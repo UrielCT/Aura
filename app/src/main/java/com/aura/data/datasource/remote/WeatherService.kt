@@ -1,4 +1,4 @@
-package com.aura.ui
+package com.aura.data.datasource.remote
 
 import com.aura.ui.models.WeatherResponse
 import com.aura.ui.utils.Constants

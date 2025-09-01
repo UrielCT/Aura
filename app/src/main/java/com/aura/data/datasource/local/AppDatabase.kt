@@ -1,10 +1,10 @@
-package com.aura
+package com.aura.data.datasource.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.aura.dao.CityDao
-import com.aura.dao.WeatherCityDao
-import com.aura.dao.WeatherDao
+import com.aura.data.datasource.local.dao.CityDao
+import com.aura.data.datasource.local.dao.WeatherCityDao
+import com.aura.data.datasource.local.dao.WeatherDao
 import com.aura.ui.models.City
 import com.aura.ui.models.Weather
 import com.aura.ui.utils.Constants

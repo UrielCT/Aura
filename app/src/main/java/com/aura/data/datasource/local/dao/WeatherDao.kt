@@ -1,4 +1,4 @@
-package com.aura.dao
+package com.aura.data.datasource.local.dao
 
 import androidx.room.Dao
 import androidx.room.Delete

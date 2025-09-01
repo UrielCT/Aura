@@ -1,12 +1,13 @@
 package com.aura
 
 import android.app.Application
-import com.aura.ui.di.componentsModule
-import com.aura.ui.di.utilsModule
-import com.aura.ui.screens.cities.di.citiesModule
-import com.aura.ui.screens.weather.di.remoteDataSourceModule
-import com.aura.ui.screens.weather.di.weatherModule
-import com.aura.ui.utils.localDatasourceModule
+import com.aura.di.componentsModule
+import com.aura.di.utilsModule
+import com.aura.di.databaseModule
+import com.aura.di.networkModule
+import com.aura.di.repositoryModule
+import com.aura.di.useCaseModule
+import com.aura.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -15,8 +16,15 @@ class AuraApp : Application() {
         super.onCreate()
         startKoin{
             androidContext(this@AuraApp)
-            modules(weatherModule, utilsModule, remoteDataSourceModule,
-                localDatasourceModule, componentsModule, citiesModule)
+            modules(
+                utilsModule,
+                networkModule,
+                componentsModule,
+                viewModelModule,
+                databaseModule,
+                repositoryModule,
+                useCaseModule
+            )
         }
     }
 }

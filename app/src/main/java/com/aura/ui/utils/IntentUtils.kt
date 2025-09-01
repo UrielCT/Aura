@@ -7,6 +7,7 @@ import androidx.core.net.toUri
 import com.aura.R
 
 class IntentUtils(private val context: Context) {
+
     fun showMap(lat:Double,lon:Double,label:String){
         val intent = Intent(Intent.ACTION_VIEW)
         intent.apply {

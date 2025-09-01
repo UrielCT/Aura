@@ -75,7 +75,9 @@ fun WeatherScreen(
                     .fillMaxWidth()
                     .height(MessageVerticalSpace),
                 msgRes = uiState.msgRes,
-                onDismiss = { vm.clearMsg() }
+                onDismiss = {
+                    vm.clearMsg()
+                }
             )
             SearchView { name ->
                 vm.searchWeather(name)

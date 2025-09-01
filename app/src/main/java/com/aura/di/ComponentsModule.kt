@@ -1,4 +1,4 @@
-package com.aura.ui.di
+package com.aura.di
 
 import android.app.Application
 import coil.ImageLoader
