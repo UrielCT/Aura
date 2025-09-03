@@ -2,29 +2,29 @@ package com.aura.data.datasource.local.dao
 
 import androidx.room.Dao
 import androidx.room.Transaction
-import com.aura.ui.models.City
-import com.aura.ui.models.Weather
+import com.aura.data.model.CityEntity
+import com.aura.data.model.WeatherEntity
 
 @Dao
 interface WeatherCityDao : CityDao, WeatherDao {
     @Transaction
-    suspend fun addCityAndWeather(city: City, weather: Weather):Long{
-        val dbCity = getCityByNameAndCountry(city.name, city.country)
+    suspend fun addCityAndWeather(cityEntity: CityEntity, weatherEntity: WeatherEntity):Long{
+        val dbCity = getCityByNameAndCountry(cityEntity.name, cityEntity.country)
         if (dbCity == null){
-            return addWeather(weather.copy(cityId = addCity(city)))
+            return addWeather(weatherEntity.copy(cityId = addCity(cityEntity)))
         }else{
             getWeatherByCityId(dbCity.id)?.let { dbWeather ->
-                return updateWeather(weather.copy(id = dbWeather.id, cityId = dbWeather.cityId)).toLong()
+                return updateWeather(weatherEntity.copy(id = dbWeather.id, cityId = dbWeather.cityId)).toLong()
             }
         }
         return 0
     }
 
     @Transaction
-    suspend fun deleteCityAndWeather(city: City):Int{
-        getWeatherByCityId(cityId = city.id)?.let { weather ->
+    suspend fun deleteCityAndWeather(cityEntity: CityEntity):Int{
+        getWeatherByCityId(cityId = cityEntity.id)?.let { weather ->
             deleteWeather(weather)
-            return deleteCity(city)
+            return deleteCity(cityEntity)
         }
         return 0
     }

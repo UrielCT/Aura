@@ -3,8 +3,8 @@ package com.aura.data.datasource.local
 import com.aura.data.datasource.local.dao.CityDao
 import com.aura.data.datasource.local.dao.WeatherCityDao
 import com.aura.data.datasource.local.dao.WeatherDao
-import com.aura.ui.models.City
-import com.aura.ui.models.WeatherCity
+import com.aura.data.model.CityEntity
+import com.aura.domain.model.WeatherCity
 import com.aura.ui.utils.FormatUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -17,12 +17,12 @@ class LocalDataSource(
     private val utils: FormatUtils
 ) {
 
-    fun getAllCitiesRealTime(): Flow<List<City>> = cityDao.getAllCitiesRealTime()
+    fun getAllCitiesRealTime(): Flow<List<CityEntity>> = cityDao.getAllCitiesRealTime()
 
     suspend fun addWeatherAndCity(weatherCity: WeatherCity, onResult: (Boolean) -> Unit)=
         withContext(Dispatchers.IO){
-            val city = utils.weatherCityToCity(weatherCity)
-            val weather = utils.weatherCityToWeather(weatherCity)
+            val city = utils.weatherCityToCityEntity(weatherCity)
+            val weather = utils.weatherCityToWeatherEntity(weatherCity)
             val result = weatherCityDao.addCityAndWeather(city, weather)
             onResult(result > 0)
         }
@@ -38,9 +38,9 @@ class LocalDataSource(
         }
 
 
-    suspend fun deleteCityAndWeather(city: City): Boolean =
+    suspend fun deleteCityAndWeather(cityEntity: CityEntity): Boolean =
         withContext(Dispatchers.IO) {
-            weatherCityDao.deleteCityAndWeather(city) > 0
+            weatherCityDao.deleteCityAndWeather(cityEntity) > 0
         }
 
 

@@ -20,7 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.aura.ui.models.City
+import com.aura.ui.model.CityUiModel
 import com.aura.ui.theme.CommonPaddingListItemVertical
 import com.aura.ui.theme.CommonPaddingMin
 import com.aura.ui.theme.Typography
@@ -28,14 +28,14 @@ import com.aura.ui.theme.Typography
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemCityView(
-    city: City,
-    onMap: (City) -> Unit,
-    onRemove:(City) -> Unit
+    cityEntity: CityUiModel,
+    onMap: (CityUiModel) -> Unit,
+    onRemove:(CityUiModel) -> Unit
 ){
     val swipeToDismissBoxState = rememberSwipeToDismissBoxState(
         confirmValueChange = {
             if(it == SwipeToDismissBoxValue.EndToStart){
-                onRemove(city)
+                onRemove(cityEntity)
             }
             it != SwipeToDismissBoxValue.EndToStart
         }
@@ -66,13 +66,13 @@ fun ItemCityView(
         Card(modifier = Modifier.padding(CommonPaddingMin)) {
             Row {
                 Text(
-                    text = city.toString(),
+                    text = cityEntity.toString(),
                     modifier = Modifier
                         .weight(1f)
                         .padding(CommonPaddingMin),
                     style = Typography.headlineSmall
                 )
-                IconButton(onClick = { onMap(city) }) {
+                IconButton(onClick = { onMap(cityEntity) }) {
                     Icon(Icons.Default.ArrowOutward, contentDescription = null)
                 }
             }

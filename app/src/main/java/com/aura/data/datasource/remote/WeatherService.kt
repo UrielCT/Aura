@@ -1,6 +1,6 @@
 package com.aura.data.datasource.remote
 
-import com.aura.ui.models.WeatherResponse
+import com.aura.data.model.WeatherResponse
 import com.aura.ui.utils.Constants
 import retrofit2.http.GET
 import retrofit2.http.Query

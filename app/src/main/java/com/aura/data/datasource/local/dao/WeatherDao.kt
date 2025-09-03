@@ -5,25 +5,25 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.aura.ui.models.Weather
-import com.aura.ui.models.WeatherCity
+import com.aura.data.model.WeatherEntity
+import com.aura.domain.model.WeatherCity
 import com.aura.ui.utils.Constants
 
 @Dao
 interface WeatherDao {
     @Insert
-    suspend fun addWeather(weather: Weather): Long
+    suspend fun addWeather(weatherEntity: WeatherEntity): Long
 
     @Update
-    suspend fun updateWeather(weather: Weather): Int
+    suspend fun updateWeather(weatherEntity: WeatherEntity): Int
 
     @Delete
-    suspend fun deleteWeather(weather: Weather): Int
+    suspend fun deleteWeather(weatherEntity: WeatherEntity): Int
 
     @Query("SELECT * FROM ${Constants.E_WEATHER} " +
             "WHERE ${Constants.P_CITY_ID} = :cityId " +
             "LIMIT 1")
-    suspend fun getWeatherByCityId(cityId: Long): Weather?
+    suspend fun getWeatherByCityId(cityId: Long): WeatherEntity?
 
     @Query("SELECT * FROM ${Constants.E_WEATHER} " +
             "INNER JOIN ${Constants.E_CITY} " +

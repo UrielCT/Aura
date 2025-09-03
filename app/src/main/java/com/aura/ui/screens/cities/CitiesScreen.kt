@@ -25,7 +25,7 @@ import com.aura.ui.components.CustomSnackbar
 import com.aura.ui.components.DialogInfo
 import com.aura.ui.components.ProgressFullScreen
 import com.aura.ui.components.TextTitle
-import com.aura.ui.models.City
+import com.aura.ui.model.CityUiModel
 import com.aura.ui.theme.AuraTheme
 import com.aura.ui.theme.CommonPaddingXLarge
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +38,7 @@ fun CitiesScreen(
 ) {
     val uiState by vm.getUiState().collectAsState()
     var openDialog by remember { mutableStateOf(false) }
-    var selectedCity by remember { mutableStateOf<City?>(null) }
+    var selectedCityEntity by remember { mutableStateOf<CityUiModel?>(null) }
 
     Box(modifier.fillMaxSize()) {
         Column {
@@ -57,12 +57,12 @@ fun CitiesScreen(
                     items(uiState.items.size){index ->
                         val city = uiState.items[index]
                         ItemCityView(
-                            city = city,
+                            cityEntity = city,
                             onMap = {
                                 vm.showMap(city)
                             },
                             onRemove = { ct ->
-                                selectedCity = ct
+                                selectedCityEntity = ct
                                 openDialog = true
                             }
                         )
@@ -72,7 +72,7 @@ fun CitiesScreen(
         }
 
         if (openDialog){
-            selectedCity?.let { city ->
+            selectedCityEntity?.let { city ->
                 DialogInfo(
                     infoRes = R.string.dialog_msg_warning,
                     titleRes = R.string.dialog_delete_title,
@@ -108,7 +108,7 @@ fun CitiesScreenPreview(){
 
 private class CitiesVmPreview : ICitiesViewModel{
     override fun getUiState() = MutableStateFlow(CityUiState( emptyList() )) //iria lista falsa
-    override fun showMap(city: City) {}
+    override fun showMap(cityEntity: CityUiModel) {}
     override fun clearMsg() {}
-    override fun deleteCity(city: City) {}
+    override fun deleteCity(cityEntity: CityUiModel) {}
 }

@@ -1,7 +1,7 @@
 package com.aura.domain.repository
 
-import com.aura.ui.models.City
-import com.aura.ui.models.WeatherCity
+import com.aura.domain.model.City
+import com.aura.domain.model.WeatherCity
 import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {

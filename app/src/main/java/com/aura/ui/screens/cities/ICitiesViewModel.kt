@@ -1,11 +1,11 @@
 package com.aura.ui.screens.cities
 
-import com.aura.ui.models.City
+import com.aura.ui.model.CityUiModel
 import kotlinx.coroutines.flow.StateFlow
 
 interface ICitiesViewModel {
     fun getUiState(): StateFlow<CityUiState>
-    fun showMap(city: City)
+    fun showMap(cityEntity: CityUiModel)
     fun clearMsg()
-    fun deleteCity(city: City)
+    fun deleteCity(cityEntity: CityUiModel)
 }

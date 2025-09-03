@@ -1,4 +1,4 @@
-package com.aura.ui.models
+package com.aura.data.model
 
 data class Condition(
     val text:String= "",

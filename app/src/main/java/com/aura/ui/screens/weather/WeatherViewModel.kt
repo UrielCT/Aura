@@ -7,8 +7,8 @@ import com.aura.domain.usecase.AddWeatherCityUseCase
 import com.aura.domain.usecase.GetAllCitiesUseCase
 import com.aura.domain.usecase.GetWeatherByCityUseCase
 import com.aura.domain.usecase.SearchWeatherByNameUseCase
-import com.aura.ui.models.City
-import com.aura.ui.models.WeatherCity
+import com.aura.ui.model.CityUiModel
+import com.aura.ui.model.WeatherCityUiModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,9 +33,10 @@ class WeatherViewModel(
 
     private fun getAllCitiesRealTime() {
         viewModelScope.launch {
-            getAllCitiesUseCase().collect { result ->
-                if (result.isNotEmpty()) {
-                    _uiState.update { it.copy(items = result) }
+            getAllCitiesUseCase().collect { cities ->
+                if (cities.isNotEmpty()) {
+                    _uiState.update { it.copy(items = cities.map { city -> city.toCityUiModel() }) }
+                    //_uiState.update { it.copy(items = cities.map { it.toUiModel() }) }
                 } else {
                     _uiState.update {
                         it.copy(
@@ -53,16 +54,16 @@ class WeatherViewModel(
         executeAction {
             val result = searchWeatherByNameUseCase(name) // Ya devuelve directamente WeatherCity?
             if (result != null) {
-                _uiState.update { it.copy(data = result) }
+                _uiState.update { it.copy(data = result.toWeatherCityUiModel() ) }
             } else {
                 _uiState.update { it.copy(msgRes = R.string.weather_search_error) }
             }
         }
     }
 
-    fun saveWeatherCity(weatherCity: WeatherCity) {
+    fun saveWeatherCity(weatherCityUi: WeatherCityUiModel) {
         executeAction {
-            val success = addWeatherCityUseCase(weatherCity)
+            val success = addWeatherCityUseCase( weatherCityUi.toWeatherCity() )
             if (success) {
                 _uiState.update { it.copy(msgRes = R.string.weather_local_save_success) }
             } else {
@@ -71,11 +72,11 @@ class WeatherViewModel(
         }
     }
 
-    fun getWeatherByCity(city: City) {
+    fun getWeatherByCity(cityUi: CityUiModel) {
         executeAction {
-            val result = getWeatherByCityUseCase(city)
+            val result = getWeatherByCityUseCase(cityUi.toCity())
             if (result != null) {
-                _uiState.update { it.copy(data = result) }
+                _uiState.update { it.copy(data = result.toWeatherCityUiModel()) }
             } else {
                 _uiState.update { it.copy(msgRes = R.string.weather_local_by_city_error) }
             }

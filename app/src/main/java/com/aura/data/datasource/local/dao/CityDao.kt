@@ -5,30 +5,30 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.aura.ui.models.City
+import com.aura.data.model.CityEntity
 import com.aura.ui.utils.Constants
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CityDao {
     @Insert
-    suspend fun addCity(city: City): Long
+    suspend fun addCity(cityEntity: CityEntity): Long
 
     @Update
-    suspend fun updateCity(city: City): Int
+    suspend fun updateCity(cityEntity: CityEntity): Int
 
     @Delete
-    suspend fun deleteCity(city: City): Int
+    suspend fun deleteCity(cityEntity: CityEntity): Int
 
     @Query("SELECT * FROM ${Constants.E_CITY}")
-    suspend fun getAllCities(): List<City>
+    suspend fun getAllCities(): List<CityEntity>
 
     @Query("SELECT * FROM ${Constants.E_CITY}")
-    fun getAllCitiesRealTime(): Flow<List<City>>
+    fun getAllCitiesRealTime(): Flow<List<CityEntity>>
 
     @Query("SELECT * FROM ${Constants.E_CITY} " +
             "WHERE ${Constants.P_NAME} = :name " +
             "AND ${Constants.P_COUNTRY} = :country " +
             "LIMIT 1")
-    suspend fun getCityByNameAndCountry(name: String,country:String):City?
+    suspend fun getCityByNameAndCountry(name: String,country:String): CityEntity?
 }

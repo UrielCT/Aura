@@ -2,11 +2,12 @@ package com.aura.domain.repository
 
 import com.aura.data.datasource.local.LocalDataSource
 import com.aura.data.datasource.remote.RemoteDatabase
-import com.aura.ui.models.City
-import com.aura.ui.models.WeatherCity
+import com.aura.domain.model.City
+import com.aura.domain.model.WeatherCity
 import com.aura.ui.utils.NetworkUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class WeatherRepositoryImpl(
@@ -15,7 +16,9 @@ class WeatherRepositoryImpl(
     private val networkUtils: NetworkUtils,
 ) : WeatherRepository {
 
-    override fun getAllCitiesRealTime(): Flow<List<City>> = localDataSource.getAllCitiesRealTime()
+    //override fun getAllCitiesRealTime(): Flow<List<CityEntity>> = localDataSource.getAllCitiesRealTime()
+    override fun getAllCitiesRealTime(): Flow<List<City>> =
+        localDataSource.getAllCitiesRealTime().map { list -> list.map { it.toCity() } }
 
 
     override suspend fun addWeatherAndCity(weatherCity: WeatherCity): Boolean {
@@ -35,7 +38,7 @@ class WeatherRepositoryImpl(
 
 
     override suspend fun deleteCityAndWeather(city: City): Boolean {
-        return localDataSource.deleteCityAndWeather(city)
+        return localDataSource.deleteCityAndWeather( city.toEntity() )
     }
 
 

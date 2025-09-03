@@ -1,7 +1,6 @@
 package com.aura.data.datasource.remote
 
-import com.aura.ui.models.WeatherCity
-import com.aura.ui.models.WeatherResponse
+import com.aura.domain.model.WeatherCity
 import com.aura.ui.utils.Constants
 import com.aura.ui.utils.FormatUtils
 import kotlinx.coroutines.Dispatchers
@@ -11,17 +10,6 @@ class RemoteDatabase(
     private val service: WeatherService,
     private val formatUtils: FormatUtils
 ) {
-
-
-//    suspend fun searchWeatherByName(name: String, onResult: (WeatherResponse) -> Unit) =
-//        withContext(Dispatchers.IO) {
-//            val result = service.searchWeatherByName(
-//                key = Constants.API_KEY,
-//                name = name,
-//                lang = Constants.LANG_ES
-//            )
-//            onResult(result)
-//        }
 
     suspend fun searchWeatherByName(name: String): WeatherCity? = withContext(Dispatchers.IO) {
         try {

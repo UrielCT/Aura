@@ -1,9 +1,9 @@
 package com.aura.ui.utils
 
-import com.aura.ui.models.City
-import com.aura.ui.models.Weather
-import com.aura.ui.models.WeatherCity
-import com.aura.ui.models.WeatherResponse
+import com.aura.data.model.CityEntity
+import com.aura.data.model.WeatherEntity
+import com.aura.domain.model.WeatherCity
+import com.aura.data.model.WeatherResponse
 
 class FormatUtils {
     fun responseToWeatherCity(response: WeatherResponse): WeatherCity? {
@@ -27,8 +27,11 @@ class FormatUtils {
         }
     }
 
-    fun weatherCityToCity(weatherCity: WeatherCity): City{
-        return City(
+
+
+
+    fun weatherCityToCityEntity(weatherCity: WeatherCity): CityEntity {
+        return CityEntity(
             name = weatherCity.name,
             country = weatherCity.country,
             lat = weatherCity.lat,
@@ -36,8 +39,8 @@ class FormatUtils {
         )
     }
 
-    fun weatherCityToWeather(weatherCity: WeatherCity) : Weather {
-        return Weather(
+    fun weatherCityToWeatherEntity(weatherCity: WeatherCity) : WeatherEntity {
+        return WeatherEntity(
             temp_c = weatherCity.temp_c,
             iconHttps = weatherCity.iconHttps,
             description = weatherCity.description,

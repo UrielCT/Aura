@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.aura.R
 import com.aura.domain.usecase.DeleteCityUseCase
 import com.aura.domain.usecase.GetAllCitiesUseCase
-import com.aura.ui.models.City
+import com.aura.ui.model.CityUiModel
 import com.aura.ui.utils.IntentUtils
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +31,7 @@ class CitiesViewModel(
         viewModelScope.launch {
             getAllCitiesUseCase().collect { result ->
                 if (result.isNotEmpty()) {
-                    _uiState.update { it.copy(items = result) }
+                    _uiState.update { it.copy(items = result.map { it.toCityUiModel() }) }
                 } else {
                     _uiState.update {
                         it.copy(
@@ -45,9 +45,9 @@ class CitiesViewModel(
     }
 
 
-    override fun deleteCity(city: City) {
+    override fun deleteCity(cityEntity: CityUiModel) {
         executeAction {
-            val success = deleteCityAndWeatherUseCase(city)
+            val success = deleteCityAndWeatherUseCase(cityEntity.toCity())
             if (success) {
                 _uiState.update { it.copy(msgRes = R.string.cities_msg_delete_success) }
             } else {
@@ -57,8 +57,8 @@ class CitiesViewModel(
     }
 
 
-    override fun showMap(city: City){
-        utils.showMap(city.lat,city.lon,city.name)
+    override fun showMap(cityEntity: CityUiModel){
+        utils.showMap(cityEntity.lat,cityEntity.lon,cityEntity.toString())
     }
 
     override fun clearMsg(){

@@ -37,8 +37,9 @@ import com.aura.ui.components.CoilImage
 import com.aura.ui.components.CustomSnackbar
 import com.aura.ui.components.ProgressFullScreen
 import com.aura.ui.components.TextTitle
-import com.aura.ui.models.City
-import com.aura.ui.models.WeatherCity
+import com.aura.domain.model.WeatherCity
+import com.aura.ui.model.CityUiModel
+import com.aura.ui.model.WeatherCityUiModel
 import com.aura.ui.theme.AuraTheme
 import com.aura.ui.theme.CommonPaddingDefault
 import com.aura.ui.theme.CommonPaddingMin
@@ -60,16 +61,19 @@ fun WeatherScreen(
             verticalArrangement = Arrangement.spacedBy(CommonPaddingDefault)
         ){
             TextTitle(R.string.weather_title)
+
             WeatherInfoView(uiState.data)
+
             ActionsView(
                 uiState= uiState,
-                onSelect = { city ->
-                    vm.getWeatherByCity(city)
+                onSelect = { cityUi ->
+                    vm.getWeatherByCity(cityUi)
                 },
                 onSave = {
-                    vm.saveWeatherCity(uiState.data)
+                    uiState.data?.let { vm.saveWeatherCity(it) }
                 }
             )
+
             CustomSnackbar(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -79,6 +83,7 @@ fun WeatherScreen(
                     vm.clearMsg()
                 }
             )
+
             SearchView { name ->
                 vm.searchWeather(name)
             }
@@ -89,30 +94,33 @@ fun WeatherScreen(
 
 
 @Composable
-private fun WeatherInfoView(weatherCity: WeatherCity){
+private fun WeatherInfoView(weatherCity: WeatherCityUiModel?){
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = "${weatherCity.temp_c.toInt()}°",
+        Text(text = weatherCity?.tempText ?: "",
             style = Typography.displayLarge)
 
-        Text(text = weatherCity.name,
+        Text(text = weatherCity?.name ?: "",
             style = Typography.headlineLarge)
 
-        Text(text = weatherCity.country,
+        //country
+        Text(text = weatherCity?.country ?: "",
             style = Typography.bodyLarge)
 
-        CoilImage(
-            url = weatherCity.iconHttps,
-            modifier = Modifier
-                .size(CommonPaddingXLarge)
-                .padding(top = CommonPaddingMin),
-            shape = RectangleShape
-        )
+        weatherCity?.let {
+            CoilImage(
+                url = it.iconUrl,
+                modifier = Modifier
+                    .size(CommonPaddingXLarge)
+                    .padding(top = CommonPaddingMin),
+                shape = RectangleShape
+            )
+        }
 
-        Text(text = weatherCity.description,
+        Text(text = weatherCity?.description ?: "",
             style = Typography.headlineSmall,
             textAlign = TextAlign.Center)
 
-        Text(text = if(weatherCity.name.isEmpty()) "" else "${weatherCity.wind_kph} km/h",
+        Text(text = if(weatherCity!!.name.isEmpty()) "" else weatherCity.windText,
             style = Typography.bodyLarge)
     }
 }
@@ -135,18 +143,19 @@ private fun SearchView(onSearch: (String) -> Unit){
 @Composable
 private fun ActionsView(
     uiState: WeatherUiState,
-    onSelect:(City) -> Unit,
+    onSelect:(CityUiModel) -> Unit,
     onSave:()  -> Unit
 ){
     Row(horizontalArrangement = Arrangement.spacedBy(CommonPaddingMin)) {
-        AuraDropdownMenu(items = uiState.items,
+        AuraDropdownMenu(
+            items = uiState.items,
             labelRes = R.string.cities_city,
             onSelect = { city ->
             onSelect(city)
         })
 
         OutlinedIconButton(onClick = { onSave() },
-            enabled = uiState.data.name.isNotBlank(),
+            enabled = uiState.data!!.name.isNotBlank(),
             colors = IconButtonDefaults.iconButtonColors(
                 contentColor = MaterialTheme.colorScheme.primary
             )
@@ -155,6 +164,7 @@ private fun ActionsView(
         }
     }
 }
+
 
 
 @Preview(showBackground = true)
@@ -188,7 +198,4 @@ private fun WeatherInfoPreview(){
         31f,"Vientos fuertes", 22.5f, "","Lima","Peru"
     )
 
-    AuraTheme {
-        WeatherInfoView(weatherCityPreview)
-    }
 }
