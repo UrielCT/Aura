@@ -24,7 +24,7 @@ fun provideWeatherDao(database: AppDatabase): WeatherDao = database.weatherDao()
 fun provideWeatherCityDao(database: AppDatabase): WeatherCityDao = database.weatherCityDao()
 
 val databaseModule = module {
-    single { RemoteDatabase( get(), get() ) }
+    single { RemoteDatabase( get() ) }
     single { LocalDataSource( get(), get(), get(), get()) }
 
     single { provideCityDao(get()) }

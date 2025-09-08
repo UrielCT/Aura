@@ -70,9 +70,24 @@ dependencies {
     implementation(libs.converter.gson)
 
     // Koin for Android
-    val koin_version = "4.0.3"
-    implementation ("io.insert-koin:koin-androidx-compose:$koin_version")
+    implementation (libs.koin.androidx.compose)
 
+    //Testing
+    //Mockito
+    testImplementation (libs.mockito.kotlin)
+    testImplementation(libs.mockito.inline)
+    //Coroutines
+    testImplementation (libs.jetbrains.kotlinx.coroutines.test)
+
+    // Koin Test features
+    testImplementation(libs.koin.test)
+    // Koin for JUnit 4
+    testImplementation(libs.koin.test.junit4)
+    //Mockk
+    testImplementation(libs.mockk)
+
+    implementation (libs.kotlinx.coroutines.android)
+    testImplementation (libs.androidx.core.testing)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

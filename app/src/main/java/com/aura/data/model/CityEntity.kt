@@ -2,7 +2,6 @@ package com.aura.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.aura.domain.model.City
 import com.aura.ui.utils.Constants
 
 @Entity(tableName = Constants.E_CITY)
@@ -18,11 +17,4 @@ data class CityEntity(
         return "$name, $country"
     }
 
-    fun toCity() = City(
-        id = id,
-        name = name,
-        country = country,
-        lat = lat,
-        lon = lon
-    )
 }

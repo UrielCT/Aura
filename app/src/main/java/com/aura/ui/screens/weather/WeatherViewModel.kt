@@ -3,10 +3,12 @@ package com.aura.ui.screens.weather
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aura.R
+import com.aura.domain.mappers.DomainMappers
 import com.aura.domain.usecase.AddWeatherCityUseCase
 import com.aura.domain.usecase.GetAllCitiesUseCase
 import com.aura.domain.usecase.GetWeatherByCityUseCase
 import com.aura.domain.usecase.SearchWeatherByNameUseCase
+import com.aura.ui.mappers.UiMappers
 import com.aura.ui.model.CityUiModel
 import com.aura.ui.model.WeatherCityUiModel
 import kotlinx.coroutines.Job
@@ -20,7 +22,9 @@ class WeatherViewModel(
     private val getAllCitiesUseCase: GetAllCitiesUseCase,
     private val addWeatherCityUseCase: AddWeatherCityUseCase,
     private val searchWeatherByNameUseCase: SearchWeatherByNameUseCase,
-    private val getWeatherByCityUseCase: GetWeatherByCityUseCase
+    private val getWeatherByCityUseCase: GetWeatherByCityUseCase,
+    private val domainMappers: DomainMappers,
+    private val uiMappers:UiMappers
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(WeatherUiState())
@@ -35,7 +39,8 @@ class WeatherViewModel(
         viewModelScope.launch {
             getAllCitiesUseCase().collect { cities ->
                 if (cities.isNotEmpty()) {
-                    _uiState.update { it.copy(items = cities.map { city -> city.toCityUiModel() }) }
+                    _uiState.update { it.copy(items = cities.map {  city ->
+                        domainMappers.cityToCityUiModel(city) }) }
                     //_uiState.update { it.copy(items = cities.map { it.toUiModel() }) }
                 } else {
                     _uiState.update {
@@ -52,9 +57,9 @@ class WeatherViewModel(
 
     fun searchWeather(name: String) {
         executeAction {
-            val result = searchWeatherByNameUseCase(name) // Ya devuelve directamente WeatherCity?
+            val result = searchWeatherByNameUseCase(name)
             if (result != null) {
-                _uiState.update { it.copy(data = result.toWeatherCityUiModel() ) }
+                _uiState.update { it.copy(data = domainMappers.weatherCityToWeatherCityUiModel(result) ) }
             } else {
                 _uiState.update { it.copy(msgRes = R.string.weather_search_error) }
             }
@@ -63,7 +68,8 @@ class WeatherViewModel(
 
     fun saveWeatherCity(weatherCityUi: WeatherCityUiModel) {
         executeAction {
-            val success = addWeatherCityUseCase( weatherCityUi.toWeatherCity() )
+            val success = addWeatherCityUseCase(
+                uiMappers.weatherCityUiModelToWeatherCity(weatherCityUi) )
             if (success) {
                 _uiState.update { it.copy(msgRes = R.string.weather_local_save_success) }
             } else {
@@ -74,9 +80,10 @@ class WeatherViewModel(
 
     fun getWeatherByCity(cityUi: CityUiModel) {
         executeAction {
-            val result = getWeatherByCityUseCase(cityUi.toCity())
+            val result = getWeatherByCityUseCase(uiMappers.cityUiModelToCity(cityUi))
             if (result != null) {
-                _uiState.update { it.copy(data = result.toWeatherCityUiModel()) }
+                _uiState.update {
+                    it.copy(data = domainMappers.weatherCityToWeatherCityUiModel(result)) }
             } else {
                 _uiState.update { it.copy(msgRes = R.string.weather_local_by_city_error) }
             }

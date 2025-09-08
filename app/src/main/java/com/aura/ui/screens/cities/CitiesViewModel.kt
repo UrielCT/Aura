@@ -3,8 +3,10 @@ package com.aura.ui.screens.cities
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aura.R
+import com.aura.domain.mappers.DomainMappers
 import com.aura.domain.usecase.DeleteCityUseCase
 import com.aura.domain.usecase.GetAllCitiesUseCase
+import com.aura.ui.mappers.UiMappers
 import com.aura.ui.model.CityUiModel
 import com.aura.ui.utils.IntentUtils
 import kotlinx.coroutines.Job
@@ -17,7 +19,9 @@ import kotlinx.coroutines.launch
 class CitiesViewModel(
     private val getAllCitiesUseCase: GetAllCitiesUseCase,
     private val deleteCityAndWeatherUseCase: DeleteCityUseCase,
-    private val utils: IntentUtils
+    private val utils: IntentUtils,
+    private val domainMappers:DomainMappers,
+    private val uiMappers:UiMappers
 ) : ViewModel(), ICitiesViewModel {
 
     private val _uiState = MutableStateFlow(CityUiState())
@@ -31,7 +35,7 @@ class CitiesViewModel(
         viewModelScope.launch {
             getAllCitiesUseCase().collect { result ->
                 if (result.isNotEmpty()) {
-                    _uiState.update { it.copy(items = result.map { it.toCityUiModel() }) }
+                    _uiState.update { it.copy(items = result.map { domainMappers.cityToCityUiModel(it) }) }
                 } else {
                     _uiState.update {
                         it.copy(
@@ -47,7 +51,7 @@ class CitiesViewModel(
 
     override fun deleteCity(cityEntity: CityUiModel) {
         executeAction {
-            val success = deleteCityAndWeatherUseCase(cityEntity.toCity())
+            val success = deleteCityAndWeatherUseCase(uiMappers.cityUiModelToCity(cityEntity))
             if (success) {
                 _uiState.update { it.copy(msgRes = R.string.cities_msg_delete_success) }
             } else {
@@ -58,7 +62,7 @@ class CitiesViewModel(
 
 
     override fun showMap(cityEntity: CityUiModel){
-        utils.showMap(cityEntity.lat,cityEntity.lon,cityEntity.toString())
+        utils.showMap(cityEntity.lat, cityEntity.lon, cityEntity.toString())
     }
 
     override fun clearMsg(){
