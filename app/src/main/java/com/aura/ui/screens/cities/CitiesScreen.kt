@@ -21,12 +21,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aura.R
-import com.aura.ui.components.CustomSnackbar
+import com.aura.ui.components.CustomSnackBar
 import com.aura.ui.components.DialogInfo
 import com.aura.ui.components.ProgressFullScreen
 import com.aura.ui.components.TextTitle
 import com.aura.ui.model.CityUiModel
 import com.aura.ui.theme.AuraTheme
+import com.aura.ui.theme.CommonPaddingDefault
 import com.aura.ui.theme.CommonPaddingXLarge
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.androidx.compose.koinViewModel
@@ -84,8 +85,9 @@ fun CitiesScreen(
             }
         }
 
-        CustomSnackbar(
-            modifier = Modifier.fillMaxSize(),
+        CustomSnackBar(
+            modifier = Modifier.fillMaxSize()
+                .padding(bottom = CommonPaddingDefault),
             backgroundColor = Color.White,
             shape = CircleShape,
             msgRes = uiState.msgRes,
@@ -107,7 +109,7 @@ fun CitiesScreenPreview(){
 }
 
 private class CitiesVmPreview : ICitiesViewModel{
-    override fun getUiState() = MutableStateFlow(CityUiState( emptyList() )) //iria lista falsa
+    override fun getUiState() = MutableStateFlow(CityUiState( emptyList() ))
     override fun showMap(cityEntity: CityUiModel) {}
     override fun clearMsg() {}
     override fun deleteCity(cityEntity: CityUiModel) {}

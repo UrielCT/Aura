@@ -19,4 +19,4 @@ import org.junit.runners.Suite.SuiteClasses
     WeatherViewModelTest::class,
     CitiesViewModelTest::class
 )
-class AllTests { }
+class AllTests

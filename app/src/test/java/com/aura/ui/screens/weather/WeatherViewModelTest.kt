@@ -8,10 +8,10 @@ import com.aura.domain.usecase.GetWeatherByCityUseCase
 import com.aura.domain.usecase.SearchWeatherByNameUseCase
 import com.aura.ui.mappers.UiMappers
 import com.aura.ui.model.WeatherCityUiModel
-import com.cursosant.cursosant.common.model.cityPreview
-import com.cursosant.cursosant.common.model.cityUiModel
-import com.cursosant.cursosant.common.model.weatherCityTest
-import com.cursosant.cursosant.common.model.weatherCityUiModel
+import com.aura.ui.utils.cityPreview
+import com.aura.ui.utils.cityUiModel
+import com.aura.ui.utils.weatherCityTest
+import com.aura.ui.utils.weatherCityUiModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -67,15 +67,15 @@ class WeatherViewModelTest {
 
     @Test
     fun `when viewmodel is created at the first time, get all cities and set items`() = runTest {
-        // Given: una lista de ciudades
+        // Given: list of cities
         val cities = listOf(cityPreview, cityPreview)
         val cityUi = cityUiModel
 
-        // Mock: getAllCitiesUseCase devuelve la lista de ciudades
+        // Mock: getAllCitiesUseCase return a list of cities
         coEvery { getAllCitiesUseCase() } returns flowOf(cities)
         every { domainMappers.cityToCityUiModel(any()) } returns cityUi
 
-        // When: se crea el ViewModel
+        // When
         val vm = WeatherViewModel(
             getAllCitiesUseCase,
             addWeatherCityUseCase,
@@ -85,19 +85,19 @@ class WeatherViewModelTest {
             uiMappers
         )
 
-        // Esperar a que las coroutines terminen
+
         advanceUntilIdle()
 
-        // Then: uiState.items contiene las ciudades mapeadas
+        // Then: uiState.items
         assertEquals(listOf(cityUi, cityUi), vm.uiState.value.items)
     }
 
     @Test
     fun `when viewmodel is created and cities is empty, set msgRes to weather_empty_list`() = runTest {
-        // Given: flujo vacío
+        // Given
         coEvery { getAllCitiesUseCase() } returns flowOf(emptyList())
 
-        // When: se crea el ViewModel
+        // When
         val vm = WeatherViewModel(
             getAllCitiesUseCase,
             addWeatherCityUseCase,
@@ -107,10 +107,10 @@ class WeatherViewModelTest {
             uiMappers
         )
 
-        // Esperamos a que termine la coroutine del init
+
         advanceUntilIdle()
 
-        // Then: items vacío y msgRes con el valor esperado
+        // Then
         assertTrue(vm.uiState.value.items.isEmpty())
     }
 

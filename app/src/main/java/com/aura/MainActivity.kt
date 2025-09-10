@@ -13,12 +13,11 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.aura.ui.navigation.AppNavHost
 import com.aura.ui.navigation.Destination
@@ -30,33 +29,42 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AuraTheme {
-
                 val navController = rememberNavController()
-                val startDestination = Destination.WEATHER
-                var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
 
-                val navOptionsBuilder: NavOptionsBuilder.()-> Unit={
-                    popUpTo(navController.graph.id){
-                        inclusive= false
-                        saveState= true
+                val navOptionsBuilder: NavOptionsBuilder.() -> Unit = remember(navController) {
+                    {
+                        popUpTo(navController.graph.id) {
+                            inclusive = false
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                    launchSingleTop= true
-                    restoreState= true
                 }
 
-                Scaffold(modifier = Modifier.fillMaxSize(),
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
                     bottomBar = {
                         NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
-                            Destination.entries.forEachIndexed{index, destination ->
+                            Destination.entries.forEach { destination ->
                                 NavigationBarItem(
-                                    selected = selectedDestination == index,
+                                    selected = currentRoute == destination.route,
                                     onClick = {
-                                        navController.navigate(route = destination.route, navOptionsBuilder)
-                                        selectedDestination = index
+                                        if (currentRoute != destination.route) {
+                                            navController.navigate(
+                                                route = destination.route,
+                                                builder = navOptionsBuilder
+                                            )
+                                        }
                                     },
                                     icon = {
-                                        Icon(destination.icon,
-                                            contentDescription = null)
+                                        Icon(
+                                            destination.icon,
+                                            contentDescription = null
+                                        )
                                     },
                                     label = {
                                         Text(stringResource(destination.labelRes))
@@ -65,9 +73,13 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
-                    ) { innerPadding ->
-                    AppNavHost(navController,startDestination,Modifier.padding(innerPadding))
+                ) { innerPadding ->
+                    AppNavHost(
+                        navController = navController,
+                        modifier = Modifier.padding(innerPadding),
+                    )
                 }
+
             }
         }
     }

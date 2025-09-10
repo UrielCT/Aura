@@ -2,21 +2,15 @@ package com.aura.ui.screens.cities
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.aura.domain.mappers.DomainMappers
-import com.aura.domain.usecase.AddWeatherCityUseCase
 import com.aura.domain.usecase.DeleteCityUseCase
 import com.aura.domain.usecase.GetAllCitiesUseCase
-import com.aura.domain.usecase.GetWeatherByCityUseCase
-import com.aura.domain.usecase.SearchWeatherByNameUseCase
 import com.aura.ui.mappers.UiMappers
-import com.aura.ui.model.CityUiModel
-import com.aura.ui.screens.weather.WeatherViewModel
 import com.aura.ui.utils.IntentUtils
-import com.cursosant.cursosant.common.model.cityPreview
-import com.cursosant.cursosant.common.model.cityUiModel
+import com.aura.ui.utils.cityPreview
+import com.aura.ui.utils.cityUiModel
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -67,7 +61,7 @@ class CitiesViewModelTest {
 
 
     // -----------------------------------------
-    // Test inicialización y getAllCitiesRealTime
+    //  getAllCitiesRealTime
     // -----------------------------------------
     @Test
     fun `when viewmodel is created with cities, set items`() = runTest {
@@ -96,7 +90,7 @@ class CitiesViewModelTest {
     // Test deleteCity
     // -------------------------
     @Test
-    fun `deleteCity sets msgRes success when usecase returns true`() = runTest {
+    fun `deleteCity sets msgRes success when use case returns true`() = runTest {
         every { uiMappers.cityUiModelToCity(cityUiModel) } returns cityPreview
         coEvery { deleteCityUseCase(cityPreview) } returns true
 
@@ -107,7 +101,7 @@ class CitiesViewModelTest {
     }
 
     @Test
-    fun `deleteCity sets msgRes error when usecase returns false`() = runTest {
+    fun `deleteCity sets msgRes error when use case returns false`() = runTest {
         every { uiMappers.cityUiModelToCity(cityUiModel) } returns cityPreview
         coEvery { deleteCityUseCase(cityPreview) } returns false
 

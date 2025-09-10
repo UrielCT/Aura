@@ -35,7 +35,8 @@ class CitiesViewModel(
         viewModelScope.launch {
             getAllCitiesUseCase().collect { result ->
                 if (result.isNotEmpty()) {
-                    _uiState.update { it.copy(items = result.map { domainMappers.cityToCityUiModel(it) }) }
+                    _uiState.update { it.copy(items = result.map {city ->
+                        domainMappers.cityToCityUiModel(city) }) }
                 } else {
                     _uiState.update {
                         it.copy(

@@ -25,7 +25,7 @@ class WeatherRepositoryImpl(
     //override fun getAllCitiesRealTime(): Flow<List<CityEntity>> = localDataSource.getAllCitiesRealTime()
     override fun getAllCitiesRealTime(): Flow<List<City>> =
         localDataSource.getAllCitiesRealTime().map { list -> list.map {
-            dataMappers.cityEntitytoCity(it) } }
+            dataMappers.cityEntityToCity(it) } }
 
 
     override suspend fun addWeatherAndCity(weatherCity: WeatherCity): Boolean {

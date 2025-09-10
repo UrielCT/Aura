@@ -1,5 +1,6 @@
 package com.aura.ui.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -11,20 +12,20 @@ import com.aura.ui.screens.weather.WeatherScreen
 @Composable
 fun AppNavHost(
     navController: NavHostController,
-    startDestination: Destination,
+    //startDestination: Destination,
     modifier: Modifier=Modifier
 ){
     NavHost(
         navController = navController,
-        startDestination = startDestination.route
+        startDestination =  Destination.WEATHER.route,
+        modifier = modifier
     ){
-        Destination.entries.forEach{ destination ->
-            composable(destination.route){
-                when(destination){
-                    Destination.WEATHER -> WeatherScreen(modifier)
-                    Destination.CITIES -> CitiesScreen(modifier)
-                }
-            }
+
+        composable(Destination.WEATHER.route) {
+            WeatherScreen(modifier = Modifier.fillMaxSize())
+        }
+        composable(Destination.CITIES.route) {
+            CitiesScreen(modifier = Modifier.fillMaxSize())
         }
 
     }

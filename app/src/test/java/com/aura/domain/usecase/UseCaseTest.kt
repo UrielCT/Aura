@@ -1,11 +1,11 @@
 package com.aura.domain.usecase
 
 import com.aura.domain.repository.WeatherRepository
-import com.cursosant.cursosant.common.model.cityNullIslandTest
-import com.cursosant.cursosant.common.model.cityPreview
-import com.cursosant.cursosant.common.model.getAllCityPreview
-import com.cursosant.cursosant.common.model.weatherCityPreview
-import com.cursosant.cursosant.common.model.weatherCityTest
+import com.aura.ui.utils.cityNullIslandTest
+import com.aura.ui.utils.cityPreview
+import com.aura.ui.utils.getAllCityPreview
+import com.aura.ui.utils.weatherCityPreview
+import com.aura.ui.utils.weatherCityTest
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -13,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest

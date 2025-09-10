@@ -34,7 +34,6 @@ class WeatherViewModel(
         getAllCitiesRealTime()
     }
 
-
     private fun getAllCitiesRealTime() {
         viewModelScope.launch {
             getAllCitiesUseCase().collect { cities ->
@@ -54,12 +53,17 @@ class WeatherViewModel(
         }
     }
 
-
     fun searchWeather(name: String) {
         executeAction {
             val result = searchWeatherByNameUseCase(name)
             if (result != null) {
-                _uiState.update { it.copy(data = domainMappers.weatherCityToWeatherCityUiModel(result) ) }
+                _uiState.update {
+                    it.copy(
+                        data = domainMappers.weatherCityToWeatherCityUiModel(
+                            result
+                        )
+                    )
+                }
             } else {
                 _uiState.update { it.copy(msgRes = R.string.weather_search_error) }
             }

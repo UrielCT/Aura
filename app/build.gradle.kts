@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    kotlin("kapt") // en lugar de id("kotlin-kapt")
+    kotlin("kapt")
 }
 
 
@@ -54,12 +54,13 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.navigation.compose)
 
-    // Íconos extendidos
+    // extended icons
     implementation(libs.androidx.material.icons.extended)
 
     // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    //noinspection KaptUsageInsteadOfKsp
     kapt(libs.androidx.room.compiler)
 
     // Coil

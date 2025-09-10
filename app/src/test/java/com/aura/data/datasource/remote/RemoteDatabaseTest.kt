@@ -2,7 +2,7 @@ package com.aura.data.datasource.remote
 
 import com.aura.data.model.WeatherResponse
 import com.aura.ui.utils.Constants
-import com.cursosant.cursosant.common.model.weatherResponseTest
+import com.aura.ui.utils.weatherResponseTest
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 

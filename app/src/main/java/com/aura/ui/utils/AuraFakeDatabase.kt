@@ -1,11 +1,10 @@
-package com.cursosant.cursosant.common.model
+package com.aura.ui.utils
 
 import com.aura.data.model.CityEntity
 import com.aura.data.model.Condition
 import com.aura.data.model.Current
 import com.aura.data.model.WeatherResponse
 import com.aura.domain.model.City
-import com.aura.domain.model.Weather
 import com.aura.domain.model.WeatherCity
 import com.aura.ui.model.CityUiModel
 import com.aura.ui.model.WeatherCityUiModel
@@ -31,27 +30,27 @@ val weatherCityPreview = WeatherCity(
     22.5f, "", "Lima", "Perú"
 )
 
-fun getAllWeatherCityPreview() = listOf(
-    WeatherCity(
-        21f, "Nublado",
-        12.5f, "", "CDMX", "México"
-    ),
-    WeatherCity(
-        21f, "Soleado",
-        6f, "", "Madrid", "España"
-    ),
-    weatherCityPreview
-)
+//fun getAllWeatherCityPreview() = listOf(
+//    WeatherCity(
+//        21f, "Nublado",
+//        12.5f, "", "CDMX", "México"
+//    ),
+//    WeatherCity(
+//        21f, "Soleado",
+//        6f, "", "Madrid", "España"
+//    ),
+//    weatherCityPreview
+//)
 
 //Testing
-val weatherTest = Weather(
-    id = 1,
-    temp_c = 10f,
-    iconHttps = "https://cdn.weatherapi.com/weather/64x64/day/116.png",
-    description = "Templado",
-    wind_kph = 8f,
-    cityId = 1
-)
+//val weatherTest = Weather(
+//    id = 1,
+//    temp_c = 10f,
+//    iconHttps = "https://cdn.weatherapi.com/weather/64x64/day/116.png",
+//    description = "Templado",
+//    wind_kph = 8f,
+//    cityId = 1
+//)
 
 val weatherResponseTest = WeatherResponse(
     location = CityEntity(

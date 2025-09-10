@@ -9,7 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowOutward
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SwipeToDismissBox
@@ -25,7 +24,6 @@ import com.aura.ui.theme.CommonPaddingListItemVertical
 import com.aura.ui.theme.CommonPaddingMin
 import com.aura.ui.theme.Typography
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemCityView(
     cityEntity: CityUiModel,

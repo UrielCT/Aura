@@ -5,7 +5,7 @@ import com.aura.domain.model.City
 
 class DataMappers {
 
-    fun cityEntitytoCity(cityEntity: CityEntity): City {
+    fun cityEntityToCity(cityEntity: CityEntity): City {
         return City(
             id = cityEntity.id,
             name = cityEntity.name,

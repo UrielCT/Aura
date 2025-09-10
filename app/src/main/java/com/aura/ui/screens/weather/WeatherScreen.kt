@@ -1,5 +1,6 @@
 package com.aura.ui.screens.weather
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material.icons.filled.Search
@@ -28,16 +31,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.aura.R
 import com.aura.ui.components.AuraDropdownMenu
 import com.aura.ui.components.CoilImage
-import com.aura.ui.components.CustomSnackbar
+import com.aura.ui.components.CustomSnackBar
 import com.aura.ui.components.ProgressFullScreen
 import com.aura.ui.components.TextTitle
-import com.aura.domain.model.WeatherCity
 import com.aura.ui.model.CityUiModel
 import com.aura.ui.model.WeatherCityUiModel
 import com.aura.ui.theme.AuraTheme
@@ -54,8 +60,19 @@ fun WeatherScreen(
     vm:WeatherViewModel = koinViewModel()
 ){
     val uiState by vm.uiState.collectAsState()
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
-    Box(modifier.fillMaxSize()){
+    Box(
+        modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                }
+            }
+    ){
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(CommonPaddingDefault)
@@ -70,18 +87,21 @@ fun WeatherScreen(
                     vm.getWeatherByCity(cityUi)
                 },
                 onSave = {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
                     uiState.data?.let { vm.saveWeatherCity(it) }
                 }
             )
 
-            CustomSnackbar(
+            CustomSnackBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(MessageVerticalSpace),
                 msgRes = uiState.msgRes,
                 onDismiss = {
                     vm.clearMsg()
-                }
+                },
+                textColor = MaterialTheme.colorScheme.primary
             )
 
             SearchView { name ->
@@ -128,13 +148,34 @@ private fun WeatherInfoView(weatherCity: WeatherCityUiModel?){
 @Composable
 private fun SearchView(onSearch: (String) -> Unit){
     var cityValue by remember { mutableStateOf("") }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+
     Row(verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(CommonPaddingMin)
     ){
-        OutlinedTextField(value = cityValue,
+        OutlinedTextField(
+            value = cityValue,
             onValueChange = {cityValue = it},
-            label= { Text(stringResource(R.string.cities_hint_search_city)) })
-        FilledIconButton(onClick = {onSearch(cityValue)}) {
+            label= { Text(stringResource(R.string.cities_hint_search_city)) },
+            singleLine = true,
+            maxLines = 1,
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Search
+            ),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    keyboardController?.hide()
+                    focusManager.clearFocus()
+                    onSearch(cityValue)
+                }
+            ),
+        )
+        FilledIconButton(onClick = {
+            keyboardController?.hide()
+            focusManager.clearFocus()
+            onSearch(cityValue) }
+        ) {
             Icon(imageVector = Icons.Default.Search, contentDescription = null)
         }
     }
@@ -146,15 +187,22 @@ private fun ActionsView(
     onSelect:(CityUiModel) -> Unit,
     onSave:()  -> Unit
 ){
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+
     Row(horizontalArrangement = Arrangement.spacedBy(CommonPaddingMin)) {
         AuraDropdownMenu(
             items = uiState.items,
             labelRes = R.string.cities_city,
-            onSelect = { city ->
-            onSelect(city)
-        })
+            onSelect = { city -> onSelect(city) }
+        )
 
-        OutlinedIconButton(onClick = { onSave() },
+        OutlinedIconButton(
+            onClick = {
+                keyboardController?.hide()
+                focusManager.clearFocus()
+                onSave()
+            },
             enabled = uiState.data!!.name.isNotBlank(),
             colors = IconButtonDefaults.iconButtonColors(
                 contentColor = MaterialTheme.colorScheme.primary
@@ -165,8 +213,6 @@ private fun ActionsView(
     }
 }
 
-
-
 @Preview(showBackground = true)
 @Composable
 private fun SearchPreview(){
@@ -175,27 +221,3 @@ private fun SearchPreview(){
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun ActionsPreview(){
-    AuraTheme {
-        ActionsView(WeatherUiState(),{},{})
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun WeatherScreenPreview(){
-    AuraTheme {
-        WeatherScreen(Modifier)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun WeatherInfoPreview(){
-    val weatherCityPreview= WeatherCity(
-        31f,"Vientos fuertes", 22.5f, "","Lima","Peru"
-    )
-
-}

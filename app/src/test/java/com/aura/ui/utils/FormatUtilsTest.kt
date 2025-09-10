@@ -2,8 +2,6 @@ package com.aura.ui.utils
 
 import com.aura.data.model.CityEntity
 import com.aura.data.model.WeatherResponse
-import com.cursosant.cursosant.common.model.weatherCityPreview
-import com.cursosant.cursosant.common.model.weatherResponseTest
 import org.junit.Assert.*
 
 import org.junit.Test
