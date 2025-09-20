@@ -18,8 +18,8 @@ class WeatherRepositoryImpl(
     private val remoteDatabase: RemoteDatabase,
     private val networkUtils: NetworkUtils,
     private val formatUtils: FormatUtils,
-    private val dataMappers:DataMappers,
-    private val domainMappers:DomainMappers
+    private val dataMappers: DataMappers,
+    private val domainMappers: DomainMappers
 ) : WeatherRepository {
 
     //override fun getAllCitiesRealTime(): Flow<List<CityEntity>> = localDataSource.getAllCitiesRealTime()
