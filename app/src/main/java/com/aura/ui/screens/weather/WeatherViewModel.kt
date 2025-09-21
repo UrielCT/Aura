@@ -5,24 +5,28 @@ import androidx.lifecycle.viewModelScope
 import com.aura.R
 import com.aura.domain.mappers.DomainMappers
 import com.aura.domain.usecase.AddWeatherCityUseCase
+import com.aura.domain.usecase.CanAccessToAppUseCase
 import com.aura.domain.usecase.GetAllCitiesUseCase
 import com.aura.domain.usecase.GetWeatherByCityUseCase
 import com.aura.domain.usecase.SearchWeatherByNameUseCase
 import com.aura.ui.mappers.UiMappers
 import com.aura.ui.model.CityUiModel
 import com.aura.ui.model.WeatherCityUiModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WeatherViewModel(
     private val getAllCitiesUseCase: GetAllCitiesUseCase,
     private val addWeatherCityUseCase: AddWeatherCityUseCase,
     private val searchWeatherByNameUseCase: SearchWeatherByNameUseCase,
     private val getWeatherByCityUseCase: GetWeatherByCityUseCase,
+    private val canAccessToAppUseCase: CanAccessToAppUseCase,
     private val domainMappers: DomainMappers,
     private val uiMappers:UiMappers
 ): ViewModel() {
@@ -30,8 +34,21 @@ class WeatherViewModel(
     private val _uiState = MutableStateFlow(WeatherUiState())
     val uiState: StateFlow<WeatherUiState> = _uiState.asStateFlow()
 
+    private val _blockVersion = MutableStateFlow<Boolean>(false)
+    val blockVersion:StateFlow<Boolean> = _blockVersion
+
     init {
+        checkUserVersion()
         getAllCitiesRealTime()
+    }
+
+    private fun checkUserVersion(){
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO){
+                canAccessToAppUseCase()
+            }
+            _blockVersion.value = !result
+        }
     }
 
     private fun getAllCitiesRealTime() {
@@ -40,7 +57,6 @@ class WeatherViewModel(
                 if (cities.isNotEmpty()) {
                     _uiState.update { it.copy(items = cities.map {  city ->
                         domainMappers.cityToCityUiModel(city) }) }
-                    //_uiState.update { it.copy(items = cities.map { it.toUiModel() }) }
                 } else {
                     _uiState.update {
                         it.copy(

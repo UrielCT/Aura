@@ -72,6 +72,7 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
 # Firebase
 firebase-bom={module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom"}
 firebase-crashlytics = {module = "com.google.firebase:firebase-crashlytics"}
+firebase-config = {module = "com.google.firebase:firebase-config-ktx"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

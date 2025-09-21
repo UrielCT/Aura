@@ -16,7 +16,7 @@ import com.aura.ui.theme.ProgressBackground
 @Composable
 fun ProgressFullScreen(visible:Boolean = false){
     AnimatedVisibility(
-        visible=visible,
+        visible = visible,
         enter = fadeIn(),
         exit = fadeOut()
     ) {

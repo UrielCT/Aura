@@ -1,6 +1,7 @@
 package com.aura.di
 
 import com.aura.domain.usecase.AddWeatherCityUseCase
+import com.aura.domain.usecase.CanAccessToAppUseCase
 import com.aura.domain.usecase.DeleteCityUseCase
 import com.aura.domain.usecase.GetAllCitiesUseCase
 import com.aura.domain.usecase.GetWeatherByCityUseCase
@@ -13,4 +14,5 @@ val useCaseModule = module {
     single { SearchWeatherByNameUseCase( get() ) }
     single { DeleteCityUseCase( get() ) }
     single { GetWeatherByCityUseCase( get() ) }
+    single { CanAccessToAppUseCase( get() ) }
 }

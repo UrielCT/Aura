@@ -1,5 +1,8 @@
 package com.aura.ui.screens.weather
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,6 +50,7 @@ import com.aura.ui.components.CoilImage
 import com.aura.ui.components.CustomSnackBar
 import com.aura.ui.components.ProgressFullScreen
 import com.aura.ui.components.TextTitle
+import com.aura.ui.components.VersionDialog
 import com.aura.ui.model.CityUiModel
 import com.aura.ui.model.WeatherCityUiModel
 import com.aura.ui.theme.CommonPaddingDefault
@@ -62,8 +66,11 @@ fun WeatherScreen(
     vm:WeatherViewModel = koinViewModel()
 ){
     val uiState by vm.uiState.collectAsState()
+    val blockVersion by vm.blockVersion.collectAsState()
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    if(blockVersion) VersionDialog()
 
     LaunchedEffect(Unit) {
         focusManager.clearFocus(force = true)
@@ -159,8 +166,11 @@ private fun WeatherInfoView(
             style = Typography.headlineSmall,
             textAlign = TextAlign.Center)
 
-        Text(text = if(weatherCity!!.name.isEmpty()) "" else weatherCity.windText,
-            style = Typography.bodyLarge)
+        Text(
+            text = if (weatherCity?.name.isNullOrEmpty()) "" else weatherCity?.windText ?: "",
+            style = Typography.bodyLarge
+        )
+
     }
 }
 
@@ -210,12 +220,32 @@ private fun ActionsView(
 
         OutlinedIconButton(
             onClick = { onSave() },
-            enabled = uiState.data!!.name.isNotBlank(),
+            enabled = uiState.data?.name?.isNotBlank() == true,
             colors = IconButtonDefaults.iconButtonColors(
                 contentColor = MaterialTheme.colorScheme.primary
             )
         ) {
             Icon(Icons.Default.CloudDownload, contentDescription = null)
         }
+    }
+}
+
+
+fun navigateToPlayStore(context: Context){
+    val appPackage = context.packageName
+    try {
+        context.startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("market://details?id=$appPackage")
+            )
+        )
+    }catch (e:Exception){
+        context.startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/detail?id=$appPackage")
+            )
+        )
     }
 }

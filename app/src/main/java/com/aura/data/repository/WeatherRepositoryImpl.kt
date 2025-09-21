@@ -1,13 +1,19 @@
-package com.aura.domain.repository
+package com.aura.data.repository
 
+import android.content.Context
 import com.aura.data.datasource.local.LocalDataSource
 import com.aura.data.datasource.remote.RemoteDatabase
 import com.aura.data.mappers.DataMappers
 import com.aura.domain.mappers.DomainMappers
 import com.aura.domain.model.City
 import com.aura.domain.model.WeatherCity
+import com.aura.domain.repository.WeatherRepository
 import com.aura.ui.utils.FormatUtils
 import com.aura.ui.utils.NetworkUtils
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.remoteConfigSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -19,10 +25,19 @@ class WeatherRepositoryImpl(
     private val networkUtils: NetworkUtils,
     private val formatUtils: FormatUtils,
     private val dataMappers: DataMappers,
-    private val domainMappers: DomainMappers
+    private val domainMappers: DomainMappers,
+    private val context: Context
 ) : WeatherRepository {
 
-    //override fun getAllCitiesRealTime(): Flow<List<CityEntity>> = localDataSource.getAllCitiesRealTime()
+    companion object{
+        const val MIN_VERSION = "min_version"
+    }
+
+    private val remoteConfig:FirebaseRemoteConfig = Firebase.remoteConfig.apply {
+        setConfigSettingsAsync(remoteConfigSettings { minimumFetchIntervalInSeconds = 3600 }) // cambiar a 3600
+        fetchAndActivate()
+    }
+
     override fun getAllCitiesRealTime(): Flow<List<City>> =
         localDataSource.getAllCitiesRealTime().map { list -> list.map {
             dataMappers.cityEntityToCity(it) } }
@@ -77,4 +92,14 @@ class WeatherRepositoryImpl(
     }
 
 
+    override suspend fun getCurrentVersion(): List<Int> {
+        val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+        val versionName = packageInfo.versionName ?: "1.0.0"
+        return versionName.split(".").map { it.toIntOrNull() ?: 0 }
+    }
+
+    override suspend fun getMinAllowedVersion(): List<Int> {
+        val minVersionString = remoteConfig.getString(MIN_VERSION)
+        return minVersionString.split(".").map { it.toIntOrNull() ?: 0 }
+    }
 }

@@ -16,7 +16,6 @@ class LocalDataSource(
     private val weatherCityDao: WeatherCityDao,
     private val utils: FormatUtils
 ) {
-
     fun getAllCitiesRealTime(): Flow<List<CityEntity>> = cityDao.getAllCitiesRealTime()
 
     suspend fun addWeatherAndCity(weatherCity: WeatherCity, onResult: (Boolean) -> Unit)=
@@ -27,7 +26,6 @@ class LocalDataSource(
             onResult(result > 0)
         }
 
-
     suspend fun getWeatherCityByCityId(cityId: Long): WeatherCity? =
         withContext(Dispatchers.IO) {
             try {
@@ -37,11 +35,9 @@ class LocalDataSource(
             }
         }
 
-
     suspend fun deleteCityAndWeather(cityEntity: CityEntity): Boolean =
         withContext(Dispatchers.IO) {
             weatherCityDao.deleteCityAndWeather(cityEntity) > 0
         }
-
 
 }

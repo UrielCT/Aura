@@ -16,5 +16,4 @@ data class CityEntity(
     override fun toString(): String {
         return "$name, $country"
     }
-
 }

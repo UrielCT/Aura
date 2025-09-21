@@ -21,7 +21,7 @@ class UiMappers {
         return WeatherCity(
             temp_c = (wCiUiModel.tempText.replace("°C", "").toDoubleOrNull() ?: 0.0).toFloat(),
             description = wCiUiModel.description,
-            wind_kph = (wCiUiModel.windText.replace("Viento:", "")
+            wind_kph = (wCiUiModel.windText.replace("Wind:", "")
                 .replace("km/h", "")
                 .trim()
                 .toDoubleOrNull() ?: 0.0).toFloat(),

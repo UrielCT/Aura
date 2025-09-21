@@ -30,28 +30,6 @@ val weatherCityPreview = WeatherCity(
     22.5f, "", "Lima", "Perú"
 )
 
-//fun getAllWeatherCityPreview() = listOf(
-//    WeatherCity(
-//        21f, "Nublado",
-//        12.5f, "", "CDMX", "México"
-//    ),
-//    WeatherCity(
-//        21f, "Soleado",
-//        6f, "", "Madrid", "España"
-//    ),
-//    weatherCityPreview
-//)
-
-//Testing
-//val weatherTest = Weather(
-//    id = 1,
-//    temp_c = 10f,
-//    iconHttps = "https://cdn.weatherapi.com/weather/64x64/day/116.png",
-//    description = "Templado",
-//    wind_kph = 8f,
-//    cityId = 1
-//)
-
 val weatherResponseTest = WeatherResponse(
     location = CityEntity(
         name = "Málaga",

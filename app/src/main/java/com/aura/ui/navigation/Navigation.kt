@@ -12,7 +12,6 @@ import com.aura.ui.screens.weather.WeatherScreen
 @Composable
 fun AppNavHost(
     navController: NavHostController,
-    //startDestination: Destination,
     modifier: Modifier=Modifier
 ){
     NavHost(

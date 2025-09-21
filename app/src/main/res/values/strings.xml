@@ -20,4 +20,7 @@
     <string name="dialog_msg_warning">Advertencia: esta acción es irreversible.</string>
     <string name="dialog_delete_title">¿Eliminar?</string>
     <string name="dialog_delete_confirm">Eliminar</string>
+    <string name="update_version_msg">Actualizar</string>
+    <string name="update_version_description">Para disfrutar del contenido, por favor actualice la app.</string>
+    <string name="update_version_btn">¡ACTUALIZAR!</string>
 </resources>

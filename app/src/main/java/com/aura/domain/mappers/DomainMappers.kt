@@ -34,12 +34,11 @@ class DomainMappers {
             country = weatherCity.country,
             tempText = "${weatherCity.temp_c}°C",
             description = weatherCity.description,
-            windText = "Viento: ${weatherCity.wind_kph} km/h",
+            windText = "Wind: ${weatherCity.wind_kph} km/h",
             iconUrl = weatherCity.iconHttps,
             lat = weatherCity.lat,
             lon = weatherCity.lon
         )
-
     }
 
 }

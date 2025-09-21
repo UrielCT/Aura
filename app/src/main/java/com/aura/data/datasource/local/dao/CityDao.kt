@@ -20,9 +20,6 @@ interface CityDao {
     @Delete
     suspend fun deleteCity(cityEntity: CityEntity): Int
 
-//    @Query("SELECT * FROM ${Constants.E_CITY}")
-//    suspend fun getAllCities(): List<CityEntity>
-
     @Query("SELECT * FROM ${Constants.E_CITY}")
     fun getAllCitiesRealTime(): Flow<List<CityEntity>>
 

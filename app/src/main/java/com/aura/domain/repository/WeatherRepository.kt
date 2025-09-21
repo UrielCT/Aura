@@ -11,4 +11,6 @@ interface WeatherRepository {
     suspend fun deleteCityAndWeather(city: City): Boolean
     suspend fun searchWeatherByName(name: String): WeatherCity?
     suspend fun getWeatherByCity(city: City): WeatherCity?
+    suspend fun getCurrentVersion(): List<Int>
+    suspend fun getMinAllowedVersion(): List<Int>
 }

@@ -28,6 +28,7 @@ import com.aura.ui.components.TextTitle
 import com.aura.ui.model.CityUiModel
 import com.aura.ui.theme.AuraTheme
 import com.aura.ui.theme.CommonPaddingDefault
+import com.aura.ui.theme.CommonPaddingMiddle
 import com.aura.ui.theme.CommonPaddingXLarge
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.androidx.compose.koinViewModel
@@ -103,7 +104,7 @@ fun CitiesScreen(
 @Composable
 fun CitiesScreenPreview(){
     AuraTheme {
-        CitiesScreen(Modifier.padding(top = 24.dp),
+        CitiesScreen(Modifier.padding(top = CommonPaddingMiddle),
             vm = CitiesVmPreview())
     }
 }
