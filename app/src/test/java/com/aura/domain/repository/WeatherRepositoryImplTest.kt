@@ -62,7 +62,7 @@ class WeatherRepositoryImplTest : KoinTest{
                     single { ldb }
                     single { rdb }
                     single { WeatherRepositoryImpl( get(), get(), get(),
-                        get(),get(), get() ) }
+                        get(),get(), get(),get() ) }
                 }
             )
         }

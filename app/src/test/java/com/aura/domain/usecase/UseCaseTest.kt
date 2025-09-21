@@ -29,7 +29,6 @@ class UseCaseTest {
     private val repository: WeatherRepository = mockk()
     private val addWeatherCityUseCase = AddWeatherCityUseCase(repository)
     private val deleteCityUseCase = DeleteCityUseCase(repository)
-    private val canAccessToAppUseCase = CanAccessToAppUseCase(repository)
 
     private val testDispatcher = UnconfinedTestDispatcher()
 
@@ -196,5 +195,6 @@ class UseCaseTest {
             assertEquals("Network error", e.message)
         }
     }
+
 
 }

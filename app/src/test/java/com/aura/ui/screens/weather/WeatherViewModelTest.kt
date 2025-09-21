@@ -3,6 +3,7 @@ package com.aura.ui.screens.weather
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.aura.domain.mappers.DomainMappers
 import com.aura.domain.usecase.AddWeatherCityUseCase
+import com.aura.domain.usecase.CanAccessToAppUseCase
 import com.aura.domain.usecase.GetAllCitiesUseCase
 import com.aura.domain.usecase.GetWeatherByCityUseCase
 import com.aura.domain.usecase.SearchWeatherByNameUseCase
@@ -38,6 +39,7 @@ class WeatherViewModelTest {
     private val addWeatherCityUseCase: AddWeatherCityUseCase = mockk()
     private val searchWeatherByNameUseCase: SearchWeatherByNameUseCase = mockk()
     private val getWeatherByCityUseCase: GetWeatherByCityUseCase = mockk()
+    private val canAccessToAppUseCase: CanAccessToAppUseCase = mockk()
     private val domainMappers: DomainMappers = mockk()
     private val uiMappers: UiMappers = mockk()
 
@@ -55,7 +57,7 @@ class WeatherViewModelTest {
         coEvery { getAllCitiesUseCase() } returns flowOf(emptyList())
 
         viewModel = WeatherViewModel( getAllCitiesUseCase, addWeatherCityUseCase,
-            searchWeatherByNameUseCase, getWeatherByCityUseCase, domainMappers, uiMappers
+            searchWeatherByNameUseCase, getWeatherByCityUseCase,canAccessToAppUseCase, domainMappers, uiMappers
         )
     }
 
@@ -81,6 +83,7 @@ class WeatherViewModelTest {
             addWeatherCityUseCase,
             searchWeatherByNameUseCase,
             getWeatherByCityUseCase,
+            canAccessToAppUseCase,
             domainMappers,
             uiMappers
         )
@@ -103,6 +106,7 @@ class WeatherViewModelTest {
             addWeatherCityUseCase,
             searchWeatherByNameUseCase,
             getWeatherByCityUseCase,
+            canAccessToAppUseCase,
             domainMappers,
             uiMappers
         )
