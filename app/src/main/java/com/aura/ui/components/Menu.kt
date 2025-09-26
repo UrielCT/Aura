@@ -13,6 +13,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 
 @Composable
@@ -21,10 +23,19 @@ fun <T>AuraDropdownMenu(
     labelRes:Int,
     onSelect:(T) -> Unit
 ){
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     var selectedItem by remember { mutableStateOf<T?>(null) }
     var isExpanded by remember { mutableStateOf(false) }
     Box{
-        OutlinedButton(onClick = { isExpanded = !isExpanded }) {
+        OutlinedButton(
+            onClick = {
+                focusManager.clearFocus(force = true)
+                keyboardController?.hide()
+                isExpanded = !isExpanded
+            }
+        ) {
             Text(text = selectedItem?.toString() ?: stringResource(labelRes))
             Icon(Icons.Default.ArrowDropDown, contentDescription = null)
         }

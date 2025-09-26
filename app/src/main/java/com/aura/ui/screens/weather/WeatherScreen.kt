@@ -184,13 +184,13 @@ private fun SearchView(onSearch: (String) -> Unit){
         horizontalArrangement = Arrangement.spacedBy(CommonPaddingMin)
     ){
         OutlinedTextField(
+
             value = cityValue,
             onValueChange = {cityValue = it},
             label= { Text(stringResource(R.string.cities_hint_search_city)) },
             singleLine = true,
             maxLines = 1,
-            modifier = Modifier
-                .weight(1f),
+            modifier = Modifier.weight(1f),
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Search
             ),
@@ -220,7 +220,7 @@ private fun ActionsView(
 
         OutlinedIconButton(
             onClick = { onSave() },
-            enabled = uiState.data?.name?.isNotBlank() == true,
+            enabled = uiState.data?.name?.isNotBlank() == true && !uiState.isSaved,
             colors = IconButtonDefaults.iconButtonColors(
                 contentColor = MaterialTheme.colorScheme.primary
             )

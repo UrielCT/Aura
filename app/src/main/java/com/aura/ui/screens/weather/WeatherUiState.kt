@@ -8,5 +8,6 @@ data class WeatherUiState(
     val items: List<CityUiModel> = emptyList(),
     val data: WeatherCityUiModel? = WeatherCityUiModel(),
     val inProgress: Boolean = false,
+    val isSaved: Boolean = false,
     val msgRes: Int = R.string.msg_empty
 )

@@ -19,3 +19,14 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.aura.data.model.*
+-keep class com.aura.data.mappers.*
+-keep class com.aura.domain.model.*
+-keep class com.aura.domain.mappers.*
+-keep class com.aura.ui.model.*
+-keep class com.aura.ui.mappers.*
+
+
+
+

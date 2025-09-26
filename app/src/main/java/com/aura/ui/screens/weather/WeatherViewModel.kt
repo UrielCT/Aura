@@ -75,6 +75,7 @@ class WeatherViewModel(
             if (result != null) {
                 _uiState.update {
                     it.copy(
+                        isSaved = false,
                         data = domainMappers.weatherCityToWeatherCityUiModel(
                             result
                         )
@@ -91,7 +92,11 @@ class WeatherViewModel(
             val success = addWeatherCityUseCase(
                 uiMappers.weatherCityUiModelToWeatherCity(weatherCityUi) )
             if (success) {
-                _uiState.update { it.copy(msgRes = R.string.weather_local_save_success) }
+                _uiState.update {
+                    it.copy(
+                        isSaved = true,
+                        msgRes = R.string.weather_local_save_success)
+                    }
             } else {
                 _uiState.update { it.copy(msgRes = R.string.weather_local_save_error) }
             }

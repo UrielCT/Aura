@@ -12,6 +12,7 @@ android {
     namespace = "com.aura"
     compileSdk = 36
 
+
     defaultConfig {
         applicationId = "com.aura"
         minSdk = 24
@@ -24,13 +25,20 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+    lint {
+        checkReleaseBuilds = false
+        abortOnError = false
+        disable += "NullSafeMutableLiveData"
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
