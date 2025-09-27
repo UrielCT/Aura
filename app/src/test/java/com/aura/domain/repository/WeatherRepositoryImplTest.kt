@@ -1,5 +1,8 @@
 package com.aura.domain.repository
 
+import android.content.Context
+import com.aura.fakes.FakeRemoteConfigProvider
+import com.aura.domain.remote.RemoteConfigProvider
 import com.aura.data.datasource.local.LocalDataSource
 import com.aura.data.datasource.remote.RemoteDatabase
 import com.aura.data.mappers.DataMappers
@@ -44,8 +47,11 @@ class WeatherRepositoryImplTest : KoinTest{
     private val ldb: LocalDataSource = mockk()
     private val nUtils: NetworkUtils = mockk()
    // private val fUtils: FormatUtils = mockk()
+    private val context: Context = mockk(relaxed = true)
 
     private val repository: WeatherRepositoryImpl by inject()
+
+
 
     private val testDispatcher = UnconfinedTestDispatcher(TestCoroutineScheduler())
 
@@ -61,8 +67,10 @@ class WeatherRepositoryImplTest : KoinTest{
                     single { nUtils }
                     single { ldb }
                     single { rdb }
+                    single { context }
+                    single<RemoteConfigProvider> { FakeRemoteConfigProvider("1.2.3") }
                     single { WeatherRepositoryImpl( get(), get(), get(),
-                        get(),get(), get(),get() ) }
+                        get(),get(), get(),get(), get() ) }
                 }
             )
         }

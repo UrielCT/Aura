@@ -54,6 +54,8 @@ class WeatherViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
 
+        coEvery { canAccessToAppUseCase() } returns true
+
         coEvery { getAllCitiesUseCase() } returns flowOf(emptyList())
 
         viewModel = WeatherViewModel( getAllCitiesUseCase, addWeatherCityUseCase,

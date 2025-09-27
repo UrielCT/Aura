@@ -27,8 +27,7 @@ class RemoteDatabaseTest {
         whenever(mockService.searchWeatherByName(Constants.API_KEY,"CDMX",Constants.LANG_ES))
             .thenReturn(weatherResponseTest)
         //val rdb = RemoteDatabase( service = mockService, formatUtils = formatUtils)
-        var result = WeatherResponse()
-         result = rdb.searchWeatherByName("CDMX")
+        var result = rdb.searchWeatherByName("CDMX")
         assertNotNull(result)
         verify(mockService).searchWeatherByName(Constants.API_KEY,"CDMX",Constants.LANG_ES)
     }
@@ -42,8 +41,8 @@ class RemoteDatabaseTest {
             .thenReturn(null)
 
         //val rdb = RemoteDatabase( service = mockService, formatUtils = formatUtils)
-        var result: WeatherResponse? = WeatherResponse()
-        result = rdb.getWeatherByCoordinates(emptyCoordintates)
+        var result: WeatherResponse? = rdb.getWeatherByCoordinates(emptyCoordintates)
+
 
         assertNull(result)
         verify(mockService).getWeatherByCoordinates(Constants.API_KEY, emptyCoordintates,
